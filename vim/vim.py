@@ -946,14 +946,15 @@ class Actions:
         v.set_normal_mode_np()
         actions.insert(cmd)
 
-    def vim_normal_mode_exterm(cmd: str):
+    def vim_normal_mode_exterm(cmd: str = None):
         """run a given list of commands in normal mode, don't preserve INSERT,
         escape from terminal mode"""
         print(f"vim_normal_mode_exterm()")
         v = VimMode()
         v.set_normal_mode_exterm()
-        print(f"vim_normal_mode_exterm(): cmd={cmd} ")
-        actions.insert(cmd)
+        if cmd is not None:
+            print(f"vim_normal_mode_exterm(): cmd={cmd} ")
+            actions.insert(cmd)
         print(f"-------------------")
 
     def vim_normal_mode_exterm_preserve(cmd: str):
