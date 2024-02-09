@@ -1,5 +1,7 @@
-from talon import Module, actions, app, ui, cron, settings
-from ..vim.vim import NeoVimRPC, ctx
+from talon import Context, Module, actions, app, ui, cron, settings
+from ..vim.vim import NeoVimRPC
+
+ctx = Context()
 
 monitor_job = None
 nvrpc = None
