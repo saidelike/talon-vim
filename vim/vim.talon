@@ -131,7 +131,7 @@ settings():
     user.vim_use_rpc = 1
 
     # Adds debug output to the talon log
-    user.vim_debug = 0
+    user.vim_debug = 1
 
 ###
 # File editing and management

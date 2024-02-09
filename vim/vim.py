@@ -9,8 +9,10 @@ from talon import Context, Module, actions, app, settings, ui
 try:
     import pynvim
 
+    print("pynvim loaded")
     has_pynvim = True
 except Exception:
+    print("pynvim NOT loaded")
     has_pynvim = False
 
 logger = logging.getLogger("talon.vim")
@@ -856,6 +858,7 @@ class Actions:
 
     def vim_set_normal_mode_np():
         """set normal mode and don't preserve the previous mode"""
+        print("vim_set_normal_mode_np()")
         v = VimMode()
         v.set_normal_mode_np(auto=False)
 
@@ -881,6 +884,7 @@ class Actions:
 
     def vim_set_terminal_mode():
         """set terminal mode"""
+        print("vim_set_terminal_mode()")
         v = VimMode()
         v.set_terminal_mode()
 
@@ -945,9 +949,12 @@ class Actions:
     def vim_normal_mode_exterm(cmd: str):
         """run a given list of commands in normal mode, don't preserve INSERT,
         escape from terminal mode"""
+        print(f"vim_normal_mode_exterm()")
         v = VimMode()
         v.set_normal_mode_exterm()
+        print(f"vim_normal_mode_exterm(): cmd={cmd} ")
         actions.insert(cmd)
+        print(f"-------------------")
 
     def vim_normal_mode_exterm_preserve(cmd: str):
         """run a given list of commands in normal mode, escape from terminal
@@ -1084,7 +1091,9 @@ class NeoVimRPC:
         return None
 
     def get_active_mode(self):
+        # print("get_active_mode()")
         mode = self.nvim.request("nvim_get_mode")
+        # print(f"get_active_mode(): {mode:}")
         return mode
 
 
@@ -1283,7 +1292,7 @@ class VimMode:
         self.nvrpc = NeoVimRPC()
         self.canceled_timeout = settings.get("user.vim_cancel_queued_commands_timeout")
         self.wait_mode_timeout = settings.get("user.vim_mode_change_timeout")
-        self.debug_print("VimMode Initializing")
+        self.debug_print("VimMode(): VimMode Initializing")
 
     def __del__(self):
         if self.nvrpc.init_ok is True:
@@ -1292,7 +1301,9 @@ class VimMode:
     def debug_print(self, s):
         # XXX - need to override the logger
         if settings.get("user.vim_debug"):
-            logger.debug(s)
+            # this does not show atm
+            # logger.debug(s)
+            print(s)
 
     def is_normal_mode(self):
         return self.mode() in self.vim_normal_mode_indicators
@@ -1316,21 +1327,26 @@ class VimMode:
     # XXX - this can maybe get called by the parent class, since will only have
     # when the parent class is VimRPC
     def mode(self):
+        # print("mode()")
         if self.nvrpc.init_ok is True:
             mode = self.nvrpc.get_active_mode()["mode"]
-            # self.debug_print(f"RPC reported mode: {mode}")
+            # self.debug_print(f"mode(): RPC reported mode: {mode}")
         else:
+            # self.debug_print(f"mode(): no RPC reported")
             title = ui.active_window().title
             mode = None
             if "MODE:" in title:
                 mode = title.split("MODE:")[1].split(" ")[0]
-                self.debug_print(f"Window title reported mode: {mode}")
+                # self.debug_print(f"mode(): Window title reported mode: {mode}")
                 if mode not in self.vim_modes.keys():
+                    print(f"mode(): mode=None")
                     return None
 
+        print(f"mode(): mode={mode}")
         return mode
 
     def current_mode_id(self):
+        print("current_mode_id()")
         if self.is_normal_mode():
             return self.NORMAL
         elif self.is_visual_mode():
@@ -1365,10 +1381,12 @@ class VimMode:
         self.adjust_mode(self.NORMAL, auto=auto)
 
     def set_normal_mode_exterm(self):
+        print(f"set_normal_mode_exterm()")
         self.adjust_mode(self.NORMAL, escape_terminal=True)
 
     # XXX - revisit auto, maybe have separate method version or something
     def set_normal_mode_np(self, auto=True):
+        print(f"set_normal_mode_np()")
         self.adjust_mode(self.NORMAL, no_preserve=True, auto=auto)
 
     def set_visual_mode(self):
@@ -1387,6 +1405,7 @@ class VimMode:
         self.adjust_mode(self.INSERT)
 
     def set_terminal_mode(self):
+        print("set_terminal_mode()")
         self.adjust_mode(self.TERMINAL)
 
     def set_command_mode(self):
@@ -1414,15 +1433,21 @@ class VimMode:
     def adjust_mode(
         self, valid_mode_ids, no_preserve=False, escape_terminal=False, auto=True
     ):
+        print(
+            f"adjust_mode(valid_mode_ids={valid_mode_ids},no_preserve={no_preserve},escape_terminal={escape_terminal},auto={auto})"
+        )
         if auto is True and settings.get("user.vim_adjust_modes") == 0:
+            print(f"skipping mode adjustment")
             return
 
         cur = self.current_mode_id()
+        print(f"adjust_mode(): current mode: {cur}")
         if type(valid_mode_ids) != list:
             valid_mode_ids = [valid_mode_ids]
+        print(f"adjust_mode(): valid_mode_ids: {valid_mode_ids}")
         if cur not in valid_mode_ids:
             self.debug_print(
-                f"Want to adjust from from '{cur}' to one of '{valid_mode_ids}'"
+                f"adjust_mode(): Want to adjust from from '{cur}' to one of '{valid_mode_ids}'"
             )
             # Just favor the first mode match
             self.set_mode(
@@ -1432,6 +1457,8 @@ class VimMode:
             )
             # Trigger / untrigger mode-related talon grammars
             self.set_mode_tag(valid_mode_ids[0])
+        else:
+            print(f"adjust_mode(): skipping setting mode because not needed")
 
     # Often I will say `delete line` and it will trigger `@delete` and `@nine`.
     # This then keys 9. I then say `undo` to fix the bad delete, which does 9
@@ -1495,13 +1522,20 @@ class VimMode:
     # break things like macro recording/replaying. So we use keyboard
     # combinations
     def set_mode(self, wanted_mode, no_preserve=False, escape_terminal=False):
+        print(
+            f"set_mode(wanted_mode={wanted_mode},no_preserve={no_preserve},escape_terminal={escape_terminal})"
+        )
         current_mode = self.mode()
+        # print(f"set_mode(): current_mode: {current_mode}")
         if current_mode == wanted_mode or (
             self.is_terminal_mode() and wanted_mode == self.INSERT
         ):
+            print("set_mode(): returning early because already in mode")
             return
 
-        self.debug_print(f"Setting mode to {wanted_mode} from {current_mode}")
+        self.debug_print(
+            f"set_mode(): Setting mode to {wanted_mode} from {current_mode}"
+        )
         # enter normal mode where necessary
         # XXX - need to handle normal mode in Command Line window, we need to
         # be able to escape from it
@@ -1509,6 +1543,7 @@ class VimMode:
         # probably want to be able to break out of, instead of just doing more
         # fuzzy matching of the mode (ex: `no`, `rm`, `!`, etc)
         if self.is_terminal_mode():
+            print(f"set_mode(): is_terminal_mode")
             if (
                 settings.get("user.vim_escape_terminal_mode") is True
                 or escape_terminal is True
@@ -1536,6 +1571,7 @@ class VimMode:
                 # NOTE: do not wait on mode change here, as we
                 # cannot detect it
         elif self.is_insert_mode():
+            print(f"set_mode(): is_insert_mode")
             # XXX - this might need to be a or for no_preserve and
             # settings.get?
             if (
@@ -1558,10 +1594,12 @@ class VimMode:
                 time.sleep(0.05)
                 self.wait_mode_change("n")
         elif self.is_visual_mode() or self.is_command_mode() or self.is_replace_mode():
+            print(f"set_mode(): is_visual_mode|is_command_mode|is_replace_mode")
             actions.key("escape")
             time.sleep(0.05)
             self.wait_mode_change("n")
         elif self.is_normal_mode() and wanted_mode == self.COMMAND_LINE:
+            print(f"set_mode(): is_normal_mode and wanted_mode == COMMAND_LINE")
             # We explicitly escape even if normal mode, to cancel any queued
             # commands that might affect our command. For instance, accidental
             # number queueing followed by :w, etc
