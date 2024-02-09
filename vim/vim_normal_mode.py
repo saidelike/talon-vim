@@ -1,10 +1,16 @@
 from talon import Context, actions
 
-ctx = Context()
-ctx.matches = r"""
+ctx_title = Context()
+ctx_title.matches = r"""
 win.title: /VIM MODE:n/
 """
-ctx.tags = ["user.vim_normal_mode"]
+ctx_title.tags = ["user.vim_normal_mode"]
+
+
+ctx = Context()
+ctx.matches = r"""
+tag: user.vim_normal_mode
+"""
 
 
 @ctx.action_class("edit")

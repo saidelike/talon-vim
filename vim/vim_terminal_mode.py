@@ -5,6 +5,14 @@ from timeit import default_timer as timer
 from talon import Context, Module, actions, app, settings, ui
 
 mod = Module()
+
+ctx_title = Context()
+ctx_title.matches = r"""
+win.title: /VIM MODE:t/
+"""
+ctx_title.tags = ["user.vim_terminal"]
+
+
 ctx = Context()
 ctx.matches = r"""
 tag: user.vim_terminal
