@@ -2,6 +2,8 @@ win.title: /VIM MODE:t/
 -
 
 tag(): user.vim_terminal
+# hacky for now so I can use the terminal
+tag(): terminal
 
 normal [mode]: key(ctrl-\ ctrl-n)
 pop (terminal | term): key(ctrl-\ ctrl-n)
@@ -9,49 +11,64 @@ poppy: key(ctrl-\ ctrl-n)
 
 # pop terminal mode and scroll up once, from this point onward you can scroll
 # like normal
+# TODO: not working
 scroll up: key(ctrl-\ ctrl-n ctrl-b)
 
 # this causes exclusive terminal windows to exit without requiring key press or
 # dropping to a new empty buffer
-exit terminal:
+exit (terminal | term):
     key(ctrl-\)
     key(ctrl-n)
     insert("ZQ")
 
-bring line <number_small>:
+# TODO: edit.paste() doesn't work on windows due to ctrl-v not working
+# this works and windows
+bring (line|row) <number_small>:
     user.vim_normal_mode_exterm("{number_small}k")
     key('0')
     insert("y$")
+    # works on windows
+    key('p')
     user.vim_set_insert_mode()
-    edit.paste()
+    # works on linux
+    # edit.paste()
     key(space)
 
-bring line fuzzy <user.text>:
+bring [tail] line fuzzy <user.text>:
     user.vim_normal_mode_exterm(":call search(\"{text}\", 'bcW')\n")
     insert("y$")
     insert(":set nohls\n")
+    # works on windows
+    key('p')
     user.vim_set_insert_mode()
-    edit.paste()
+    # works on linux
+    # edit.paste()
 
-bring line <number_small> <user.text>:
+(bring line <number_small> <user.text>|bring tail line row <number_small> fuzzy <user.text>):
     user.vim_normal_mode_exterm("{number_small}k")
     key('0')
     insert(":call search(\"{text}\", 'c', line('.'))\n")
     insert("y$")
     insert(":set nohls\n")
+    # works on windows
+    key('p')
     user.vim_set_insert_mode()
-    edit.paste()
+    # works on linux
+    # edit.paste()
 
-bring line <number_small> <user.ordinals>:
+(bring line <number_small> <user.ordinals>|bring tail line <user.ordinals> paint row <number_small>):
     user.vim_normal_mode_exterm("{number_small}k")
     key('0')
     insert("{ordinals-1}W")
     insert("y$")
+    # works on windows
+    key('p')
     user.vim_set_insert_mode()
-    edit.paste()
+    # works on linux
+    # edit.paste()
     key(space)
 
-yank words <number_small>:
+(yank words <number_small>|copy first paint row <number_small>):
     user.vim_normal_mode_exterm("{number_small}k")
     key('0')
     insert("yE")
@@ -62,20 +79,29 @@ yank words <number_small>:
     # XXX - should this be terminal mode?
     user.vim_set_insert_mode()
 
-yank words (last <number_small> | <number_small> last):
+# the code could be refactored with "copy last paint row <number_small>"
+(yank words (last <number_small> | <number_small> last)|bring last paint row <number_small>):
     user.vim_normal_mode_exterm("{number_small}k")
     insert("$T ")
     insert("yE")
+    # works on windows
+    key('p')
     user.vim_set_insert_mode()
-    edit.paste()
+    # works on linux
+    # edit.paste()
     key(space)
 
-yank words <number_small> <user.ordinals>:
+# the spoken form could be merged with "copy first paint row <number_small>"
+(yank words <number_small> <user.ordinals>|copy <user.ordinals> paint row <number_small>):
     user.vim_normal_mode_exterm("{number_small}k")
     key('0')
     insert("{ordinals-1}W")
     insert("yE")
     user.vim_set_insert_mode()
+
+# TODO: continue from here
+
+
 
 # copy from the specified key to the end of the line
 yank words <number_small> <user.key_unmodified>:
@@ -156,21 +182,21 @@ bring <number_small> funk:
     key(down:5)
 
 # yankee are commands are for copying the remaining line from a given point
-yank line <number_small>:
+(yank line|copy row) <number_small>:
     user.vim_normal_mode_exterm("{number_small}k")
     key('0')
     insert("y$")
     user.vim_command_mode(":let @+=substitute(strtrans(@+), '\\_s\\{{2,}}', '', 'g')\n")
     user.vim_set_insert_mode()
 
-yank line <number_small> <user.ordinals>:
-    user.vim_normal_mode_exterm("{number_small}k")
+(yank line <number_small> <user.ordinals>|copy tail line <user.ordinals> paint row <number_small>):
+    uservim_normal_mode_exterm("{number_small}k")
     key('0')
     insert("{ordinals-1}W")
     insert("y$")
     user.vim_set_insert_mode()
 
-yank line (last <number_small> | <number_small> last):
+(yank line (last <number_small> | <number_small> last)|copy last paint row <number_small>):
     user.vim_normal_mode_exterm("{number_small}k")
     insert("$T ")
     insert("yE")

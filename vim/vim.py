@@ -18,6 +18,13 @@ logger = logging.getLogger("talon.vim")
 mod = Module()
 ctx = Context()
 
+mod.apps.vim = """
+os: windows
+and win.title: Neovim
+os: windows
+and app.exe: nvim-qt.exe
+"""
+
 ctx.matches = r"""
 app: vim
 """

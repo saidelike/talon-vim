@@ -37,6 +37,8 @@ and not tag: user.vim_command_mode
 
 tag(): user.vim
 tag(): user.tabs
+# this is needed on Windows to be able to enter commands with ":..." in normal mode
+tag(): user.insert_paste_disabled
 # TODO - add line_commands, etc
 
 # Talon VIM plugin tags - see plugins/ for implementations Comment out plugins
@@ -572,7 +574,7 @@ man page this: user.vim_normal_mode("K")
 ###
 [mode] normal: user.vim_set_normal_mode_np()
 [mode] insert: user.vim_set_insert_mode()
-mode terminal: user.vim_set_terminal_mode()
+(mode terminal|go term): user.vim_set_terminal_mode()
 # command mode: user.vim_set_command_mode()
 mode command [line]: user.vim_any_motion_mode_exterm_key(":")
 (mode replace | overwrite): user.vim_set_replace_mode()
@@ -633,9 +635,9 @@ reselect: user.vim_normal_mode_exterm("gv")
 
 # NOTE: Below is duplicate command with vim_terminal.talon, but included in
 # case user doesn't have `VIM mode:t` in titlestring
-(escape | pop) (term | terminal):
-    key(ctrl-\)
-    key(ctrl-n)
+# (escape | pop) (term | terminal):
+#     key(ctrl-\)
+#     key(ctrl-n)
 
 new (term | terminal): user.vim_normal_mode_exterm(":term\n")
 
