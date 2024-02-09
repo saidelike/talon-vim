@@ -9,9 +9,9 @@ yank line: user.vim_normal_mode_np("yy")
 
 push: key('end')
 
-push <user.unmodified_key>:
+push <user.key_unmodified>:
     key('end')
-    key('{unmodified_key}')
+    key('{key_unmodified}')
 
 push it:
     key('end')

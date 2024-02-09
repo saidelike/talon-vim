@@ -160,13 +160,13 @@ swap lines:
 swap (paragraph | graph):
     user.vim_normal_mode("d}}")
     user.vim_normal_mode("p")
-patch <user.unmodified_key>: user.vim_any_motion_mode("r{unmodified_key}")
+patch <user.key_unmodified>: user.vim_any_motion_mode("r{key_unmodified}")
 patch (ship | upper | upper case) <user.letters>:
     user.vim_any_motion_mode_key("r")
     user.insert_formatted(letters, "ALL_CAPS")
 # Delete the next in since of this specified character
-shoot <user.unmodified_key>:
-    user.vim_any_motion_mode("f{unmodified_key}")
+shoot <user.key_unmodified>:
+    user.vim_any_motion_mode("f{key_unmodified}")
     user.vim_any_motion_mode("x")
 
 # deleting
@@ -242,9 +242,9 @@ file append: user.vim_normal_mode_np("Go")
 
 # insert at the end of the current word
 jammie: user.vim_normal_mode_np("ea")
-jammie <user.unmodified_key>:
+jammie <user.key_unmodified>:
     user.vim_normal_mode_np("ea")
-    key("{unmodified_key}")
+    key("{key_unmodified}")
 
 (chompie | chomp here): user.vim_normal_mode_np("ex")
 chomp line: user.vim_normal_mode_np("$x")
@@ -255,13 +255,13 @@ chomp line <number>$:
 insert <user.text>: user.vim_insert_mode("{text}")
 
 # helpful for fixing typos or bad lexicons that miss a character
-(inject | crammie) <user.unmodified_key> [before]:
-    user.vim_insert_mode_key("{unmodified_key}")
+(inject | crammie) <user.key_unmodified> [before]:
+    user.vim_insert_mode_key("{key_unmodified}")
     # since there is no ctrl-o equiv coming from normal
     key(escape)
 
-(inject | crammie) <user.unmodified_key> after:
-    user.vim_normal_mode_key("a {unmodified_key}")
+(inject | crammie) <user.key_unmodified> after:
+    user.vim_normal_mode_key("a {key_unmodified}")
     # since we can't perserve mode with ctrl-o
     key(escape)
 
@@ -303,21 +303,21 @@ macro (again | repeat | replay): user.vim_any_motion_mode("@@")
 macro (start | record) <user.letter>: user.vim_any_motion_mode("q{letter}")
 macro (done | finish | stop): user.vim_any_motion_mode("q")
 
-[copy] register <user.unmodified_key> [in] to [register] <user.unmodified_key>:
-    user.vim_command_mode(":let@{unmodified_key_2}=@{unmodified_key_1}\n")
+[copy] register <user.key_unmodified> [in] to [register] <user.key_unmodified>:
+    user.vim_command_mode(":let@{key_unmodified_2}=@{key_unmodified_1}\n")
 
-yank (into | to) [register] <user.unmodified_key>:
-    user.vim_any_motion_mode('"{unmodified_key}y')
-clear into [register] <user.unmodified_key>:
-    user.vim_any_motion_mode('"{unmodified_key}d')
+yank (into | to) [register] <user.key_unmodified>:
+    user.vim_any_motion_mode('"{key_unmodified}y')
+clear into [register] <user.key_unmodified>:
+    user.vim_any_motion_mode('"{key_unmodified}d')
 
 # XXX - this should allow counted yanking, into register should become an
 # optional part of vim.py matching
 # XXX - I can't get this to work
-yank <user.vim_text_objects> (into | to) [register] <user.unmodified_key>:
-    user.vim_any_motion_mode('"{unmodified_key}y{vim_text_objects}')
-clear <user.vim_text_objects> (into | to) [register] <user.unmodified_key>:
-    user.vim_any_motion_mode('"{unmodified_key}d{vim_text_objects}')
+yank <user.vim_text_objects> (into | to) [register] <user.key_unmodified>:
+    user.vim_any_motion_mode('"{key_unmodified}y{vim_text_objects}')
+clear <user.vim_text_objects> (into | to) [register] <user.key_unmodified>:
+    user.vim_any_motion_mode('"{key_unmodified}d{vim_text_objects}')
 
 (register | registers | macros) list: user.vim_command_mode(":reg\n")
 (register | macro) show <user.letter>: user.vim_command_mode(":reg {letter}\n")
@@ -481,17 +481,17 @@ display current line number: user.vim_normal_mode_key(ctrl - g)
 
 # XXX - is it possible to integrate these with vim_motions_with_character?
 # ordinals work different for `t` for some reason, so we don't need to -1
-till <user.ordinals> <user.unmodified_key>:
-    user.vim_any_motion_mode("t{unmodified_key}{ordinals};")
+till <user.ordinals> <user.key_unmodified>:
+    user.vim_any_motion_mode("t{key_unmodified}{ordinals};")
 
-till (reversed | previous) <user.ordinals> <user.unmodified_key>:
-    user.vim_any_motion_mode("T{unmodified_key}{ordinals};")
+till (reversed | previous) <user.ordinals> <user.key_unmodified>:
+    user.vim_any_motion_mode("T{key_unmodified}{ordinals};")
 
-find <user.ordinals> <user.unmodified_key>:
-    user.vim_any_motion_mode("f{unmodified_key}{ordinals-1};")
+find <user.ordinals> <user.key_unmodified>:
+    user.vim_any_motion_mode("f{key_unmodified}{ordinals-1};")
 
-find (reversed | previous) <user.ordinals> <user.unmodified_key>:
-    user.vim_any_motion_mode("F{unmodified_key}{ordinals-1};")
+find (reversed | previous) <user.ordinals> <user.key_unmodified>:
+    user.vim_any_motion_mode("F{key_unmodified}{ordinals-1};")
 
 ###
 # Visual Text Selection
@@ -564,12 +564,12 @@ take this:
 ###
 # Visual Text Editing
 ###
-prefix <user.vim_select_motion> with <user.unmodified_key>:
+prefix <user.vim_select_motion> with <user.key_unmodified>:
     user.vim_visual_mode("{vim_select_motion}")
     insert(":")
     # leave time for vim to populate '<,'>
     sleep(50ms)
-    insert("s/^/{unmodified_key}/g\n")
+    insert("s/^/{key_unmodified}/g\n")
 
 ###
 # Command execution
@@ -642,7 +642,7 @@ drop line <number>: user.vim_command_mode(":{number}d\n")
 
 # remove first byte from a line
 pinch: user.vim_normal_mode("0x")
-prefix <user.unmodified_key>: user.vim_normal_mode("I{unmodified_key}")
+prefix <user.key_unmodified>: user.vim_normal_mode("I{key_unmodified}")
 squish: user.vim_command_mode(":s/  / /g\n")
 # XXX - this could be a generic talon thing
 # XXX - this seems broken if we do it from insert mode
@@ -659,12 +659,12 @@ swap again: key(g &)
 
 # XXX - should be switched to support any motion mode, but needs np
 # which isn't supported yet
-go first <user.unmodified_key>:
-    user.vim_normal_mode_np("^f{unmodified_key}")
+go first <user.key_unmodified>:
+    user.vim_normal_mode_np("^f{key_unmodified}")
 
     # XXX - should be switched to support any motion mode, but needs np
     # which isn't supported yet
-go last <user.unmodified_key>: user.vim_normal_mode_np("$F{unmodified_key}")
+go last <user.key_unmodified>: user.vim_normal_mode_np("$F{key_unmodified}")
 
 popup clear: user.vim_command_mode(":call popup_clear(1)")
 

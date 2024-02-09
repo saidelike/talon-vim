@@ -47,11 +47,11 @@ delete from selected:
     sleep(50ms)
     user.insert_between("g/", "/d\\j")
 
-prefix with <user.unmodified_key>:
+prefix with <user.key_unmodified>:
     insert(":")
     # leave time for vim to populate '<,'>
     sleep(50ms)
-    insert("s/^/{unmodified_key}/g\n")
+    insert("s/^/{key_unmodified}/g\n")
 
 # XXX - maybe make this work another modes
 # copy with line numbers
@@ -82,9 +82,9 @@ push: user.vim_normal_mode_np("$a")
 
 # NOTE - We need a separate key() call because some unmodified keys have
 # special names, like backspace.
-push <user.unmodified_key>:
+push <user.key_unmodified>:
     user.vim_normal_mode_np("$a")
-    key('{unmodified_key}')
+    key('{key_unmodified}')
 
 # paste to the end of a line
 # XXX

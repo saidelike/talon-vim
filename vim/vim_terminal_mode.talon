@@ -78,10 +78,10 @@ yank words <number_small> <user.ordinals>:
     user.vim_set_insert_mode()
 
 # copy from the specified key to the end of the line
-yank words <number_small> <user.unmodified_key>:
+yank words <number_small> <user.key_unmodified>:
     user.vim_normal_mode_exterm("{number_small}k")
     key('0')
-    insert("f{unmodified_key}")
+    insert("f{key_unmodified}")
     insert("yE")
     user.vim_set_insert_mode()
 
@@ -129,10 +129,10 @@ bring <number_small> <user.ordinals>:
     key(space)
 
 # copy from the specified key to the end of the line
-bring <number_small> <user.unmodified_key>:
+bring <number_small> <user.key_unmodified>:
     user.vim_normal_mode_exterm("{number_small}k")
     key('0')
-    insert("f{unmodified_key}")
+    insert("f{key_unmodified}")
     insert("yE")
 
     user.vim_set_insert_mode()

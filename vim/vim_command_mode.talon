@@ -30,9 +30,9 @@ state greedy: ".*"
 state escaped or: user.insert_between("\\(", "\\|\\)")
 
 push: key('end')
-push <user.unmodified_key>:
+push <user.key_unmodified>:
     key('end')
-    key('{unmodified_key}')
+    key('{key_unmodified}')
 
 # TODO: This should use line editing abstraction
 push that:

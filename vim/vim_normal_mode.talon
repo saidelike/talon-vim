@@ -14,9 +14,9 @@ push: user.vim_normal_mode_np("$a")
 
 # NOTE - We need a separate key() call because some unmodified keys have
 # special names, like backspace.
-push <user.unmodified_key>:
+push <user.key_unmodified>:
     user.vim_normal_mode_np("$a")
-    key('{unmodified_key}')
+    key('{key_unmodified}')
 
 # paste to the end of a line
 # XXX
