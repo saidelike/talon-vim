@@ -723,3 +723,6 @@ paste as line:
 louis call func: user.vim_command_mode_exterm(":lua ")
 louis reload (plug in | module):
     user.vim_command_mode_exterm(":lua require('plenary').reload_module('')")
+
+# debugging commands
+get mode: user.get_mode()

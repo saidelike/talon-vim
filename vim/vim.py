@@ -1045,6 +1045,12 @@ class Actions:
         v.set_any_motion_mode_exterm()
         actions.key(cmd)
 
+    def get_mode():
+        """set visual mode"""
+        v = VimMode()
+        mode = v.mode()
+        print(f"get_mode(): mode={mode}")
+
 
 class NeoVimRPC:
     """For setting/pulling the modes using RPC"""
