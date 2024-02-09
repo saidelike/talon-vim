@@ -559,8 +559,8 @@ session show: user.vim_command_mode_exterm(":echo v:this_session\n")
 
 # XXX - this is quite slow pasting into a terminal, so might want to move
 # this register into the paste register and then use the native?
-(paste from | pastor) [register] <user.unmodified_key>:
-    user.vim_any_motion_mode_exterm('"{unmodified_key}p')
+(paste from | pastor) [register] <user.key_unmodified>:
+    user.vim_any_motion_mode_exterm('"{key_unmodified}p')
 
 ###
 # Informational
@@ -697,8 +697,8 @@ command force:
 
 # useful for turning a git status list already yanked into a register into a
 # space delimited list you can paste into the command line
-remove newlines from register <user.unmodified_key>:
-    user.vim_command_mode_exterm(":let @{unmodified_key}=substitute(strtrans(@{unmodified_key}),'\\^@',' ','g')\n")
+remove newlines from register <user.key_unmodified>:
+    user.vim_command_mode_exterm(":let @{key_unmodified}=substitute(strtrans(@{key_unmodified}),'\\^@',' ','g')\n")
 
 # this assumes you have some sort of visual block selection that you want to
 # become a single line. a good example of this would be something like a list
