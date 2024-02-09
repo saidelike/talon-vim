@@ -291,7 +291,7 @@ new (empty | unnamed) (vertical | v) split: user.vim_command_mode_exterm(":vnew\
 
 # navigating splits
 # XXX - we could leverage split.talon stuff here?
-split <user.vim_arrow>:
+(split|cross) <user.vim_arrow>:
     user.vim_normal_mode("\\<c-w>{vim_arrow}")
     #user.vim_set_normal_mode_exterm()
     #key(ctrl-w)
@@ -304,11 +304,11 @@ split top left:
     user.vim_set_normal_mode_exterm()
     key(ctrl-w)
     key(t)
-split next:
+(split|cross) [next]:
     user.vim_set_normal_mode_exterm()
     key(ctrl-w)
     key(w)
-split (previous | prev):
+(split (previous | prev)|cross last):
     user.vim_set_normal_mode_exterm()
     key(ctrl-w)
     key(W)
