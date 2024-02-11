@@ -1,7 +1,5 @@
-# win.title: /VIM MODE:t/
-tag: user.vim_terminal
+tag: user.vim_terminal_mode
 -
-# tag(): user.vim_terminal
 # hacky for now so I can use the terminal
 tag(): terminal
 

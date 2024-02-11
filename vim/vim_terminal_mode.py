@@ -6,16 +6,9 @@ from talon import Context, Module, actions, app, settings, ui
 
 mod = Module()
 
-ctx_title = Context()
-ctx_title.matches = r"""
-win.title: /VIM MODE:t/
-"""
-ctx_title.tags = ["user.vim_terminal"]
-
-
 ctx = Context()
 ctx.matches = r"""
-tag: user.vim_terminal
+tag: user.vim_terminal_mode
 """
 
 last_title = None
@@ -133,7 +126,7 @@ def populate_language_modes(shell_command):
 
     for command in language_specific_commands.keys():
         if shell_command.endswith(command):
-            print("vim_terminal.py: setting context-specific language")
+            print("vim_terminal_mode.py: setting context-specific language")
             actions.user.code_set_context_language(language_specific_commands[command])
             return
 
@@ -235,7 +228,7 @@ def populate_shell_tags(shell_command, window_title):
 
 #        if not found_fuzzy:
 #            print(f"WARNING: missing tag for shell cmd: {shell_command}")
-#            print(f"WARNING: consider updating vim_terminal.py: {shell_command}")
+#            print(f"WARNING: consider updating vim_terminal_mode.py: {shell_command}")
 #
 
 

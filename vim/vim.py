@@ -20,6 +20,7 @@ logger = logging.getLogger("talon.vim")
 mod = Module()
 ctx = Context()
 
+# Neovim (commandline version) and nvim-qt.exe (GUI version)
 mod.apps.vim = """
 os: windows
 and win.title: Neovim
@@ -510,7 +511,6 @@ vim_on_and_off_settings = {
 }
 
 mod.tag("vim", desc="a tag to load various vim plugins")
-mod.tag("vim_terminal", desc="a tag to designate if we are in a vim terminal")
 mod.setting(
     "vim_preserve_insert_mode",
     type=int,
@@ -1364,6 +1364,18 @@ class VimMode:
             return self.TERMINAL
         elif self.is_command_mode():
             return self.COMMAND_LINE
+
+    def mode_to_tag(mode):
+        if mode == VimMode.NORMAL:
+            return "user.vim_normal_mode"
+        elif mode == VimMode.VISUAL:
+            return "user.vim_visual_mode"
+        elif mode == VimMode.INSERT:
+            return "user.vim_insert_mode"
+        elif mode == VimMode.TERMINAL:
+            return "user.vim_terminal_mode"
+        elif mode == VimMode.COMMAND_LINE:
+            return "user.vim_command_mode"
 
     def insert_text(self, text):
         if app.platform == "linux":
