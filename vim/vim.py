@@ -23,7 +23,13 @@ ctx = Context()
 # Neovim (commandline version) and nvim-qt.exe (GUI version)
 mod.apps.vim = """
 os: windows
-and win.title: Neovim
+and win.title: /Neovim/
+and app.exe: nvim.exe
+
+os: windows
+and win.title: /Neovim/
+and app.exe: conhost.exe
+
 os: windows
 and app.exe: nvim-qt.exe
 """
@@ -1346,14 +1352,14 @@ class VimMode:
                 mode = title.split("MODE:")[1].split(" ")[0]
                 # self.debug_print(f"mode(): Window title reported mode: {mode}")
                 if mode not in self.vim_modes.keys():
-                    print(f"mode(): mode=None")
+                    # print(f"mode(): mode=None")
                     return None
 
-        print(f"mode(): mode={mode}")
+        # print(f"mode(): mode={mode}")
         return mode
 
     def current_mode_id(self):
-        print("current_mode_id()")
+        # print("current_mode_id()")
         if self.is_normal_mode():
             return self.NORMAL
         elif self.is_visual_mode():
