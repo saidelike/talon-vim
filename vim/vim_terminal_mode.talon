@@ -23,72 +23,30 @@ exit (terminal | term):
 bring row <number_small>: user.bring_row(number_small)
 bring tail line fuzzy <user.text>: user.bring_tail_line_fuzzy(text)
 bring tail line fuzzy <user.text> row <number_small>: user.bring_tail_line_fuzzy_row(text, number_small)
+bring tail line <user.ordinals> paint row <number_small>: user.bring_tail_line_paint_row(ordinals, number_small)
+copy <user.ordinals> paint row <number_small>: user.copy_paint_row(ordinals, number_small)
+# the code could be refactored with "copy last paint row <number_small>"
+bring last paint row <number_small>: user.bring_last_paint_row(number_small)
 
 # old spoken forms
 bring line <number_small>: user.bring_row(number_small)
 bring line fuzzy <user.text>$: user.bring_tail_line_fuzzy(text)
 bring line <number_small> <user.text>: user.bring_tail_line_fuzzy_row(text, number_small)
+bring line <number_small> <user.ordinals>: user.bring_tail_line_paint_row(ordinals, number_small)
+yank words <number_small>: user.copy_paint_row(1, number_small)
+yank words <number_small> <user.ordinals>: user.copy_paint_row(ordinals, number_small)
+bring words (last <number_small> | <number_small> last): user.bring_last_paint_row(number_small)
 
-
-# bring line <number_small> <user.ordinals>:
-bring tail line <user.ordinals> paint row <number_small>:
-    user.vim_normal_mode_exterm()
-    user.move_up("{number_small}")
-    user.move_to_column_zero()
-    insert("{ordinals-1}W")
-    user.yank_to_end_of_line()
-    # works on windows
-    user.paste_after_cursor()
-    user.vim_set_insert_mode()
-    # works on linux
-    # edit.paste()
-    key(space)
-
-(yank words <number_small>|copy first paint row <number_small>):
-    user.vim_normal_mode_exterm()
-    user.move_up("{number_small}")
-    user.move_to_column_zero()
-    insert("yE")
-    # See `:help pattern`
-    # \_s   - match single white space
-    # \{2,} - at least two in a row
-    user.vim_command_mode(":set nohls | let @+=substitute(strtrans(@+), '\\_s\\{{2,}}', '', 'g')\n")
-    # XXX - should this be terminal mode?
-    user.vim_set_insert_mode()
-
-# the code could be refactored with "copy last paint row <number_small>"
-(yank words (last <number_small> | <number_small> last)|bring last paint row <number_small>):
-    user.vim_normal_mode_exterm()
-    user.move_up("{number_small}")
-    insert("$T ")
-    insert("yE")
-    # works on windows
-    user.paste_after_cursor()
-    user.vim_set_insert_mode()
-    # works on linux
-    # edit.paste()
-    key(space)
-
-# the spoken form could be merged with "copy first paint row <number_small>"
-(yank words <number_small> <user.ordinals>|copy <user.ordinals> paint row <number_small>):
-    user.vim_normal_mode_exterm()
-    user.move_up("{number_small}")
-    user.move_to_column_zero()
-    insert("{ordinals-1}W")
-    insert("yE")
-    user.vim_set_insert_mode()
 
 # TODO: continue from here
-
-
 
 # copy from the specified key to the end of the line
 yank words <number_small> <user.key_unmodified>:
     user.vim_normal_mode_exterm()
-    user.move_up("{number_small}")
+    user.move_up(number_small)
     user.move_to_column_zero()
     insert("f{key_unmodified}")
-    insert("yE")
+    user.yank_to_end_of_word()
     user.vim_set_insert_mode()
 
 # XXX - it would be nice to have this you something like treesitter on a single
@@ -97,7 +55,7 @@ yank words <number_small> <user.key_unmodified>:
 # copy a function name on the specified line
 yank words <number_small> funk:
     user.vim_normal_mode_exterm()
-    user.move_up("{number_small}")
+    user.move_up(number_small)
     user.move_to_column_zero()
     insert("f(")
     insert("yB")
@@ -107,9 +65,9 @@ yank words <number_small> funk:
 bring <number_small>:
     #    user.vim_terminal_echo_line_number("{number_small}")
     user.vim_normal_mode_exterm()
-    user.move_up("{number_small}")
+    user.move_up(number_small)
     user.move_to_column_zero()
-    insert("yE")
+    user.yank_to_end_of_word()
     # See `:help pattern`
     # \_s   - match single white space
     # \{2,} - at least two in a row
@@ -120,19 +78,19 @@ bring <number_small>:
 
 bring (last <number_small> | <number_small> last):
     user.vim_normal_mode_exterm()
-    user.move_up("{number_small}")
+    user.move_up(number_small)
     insert("$T ")
-    insert("yE")
+    user.yank_to_end_of_word()
     user.vim_set_insert_mode()
     edit.paste()
     key(space)
 
 bring <number_small> <user.ordinals>:
     user.vim_normal_mode_exterm()
-    user.move_up("{number_small}")
+    user.move_up(number_small)
     user.move_to_column_zero()
     insert("{ordinals-1}W")
-    insert("yE")
+    user.yank_to_end_of_word()
 
     user.vim_set_insert_mode()
     edit.paste()
@@ -141,10 +99,10 @@ bring <number_small> <user.ordinals>:
 # copy from the specified key to the end of the line
 bring <number_small> <user.key_unmodified>:
     user.vim_normal_mode_exterm()
-    user.move_up("{number_small}")
+    user.move_up(number_small)
     user.move_to_column_zero()
     insert("f{key_unmodified}")
-    insert("yE")
+    user.yank_to_end_of_word()
 
     user.vim_set_insert_mode()
     edit.paste()
@@ -157,7 +115,7 @@ bring <number_small> <user.key_unmodified>:
 # copy a function name on the specified line
 bring <number_small> funk:
     user.vim_normal_mode_exterm()
-    user.move_up("{number_small}")
+    user.move_up(number_small)
     user.move_to_column_zero()
     insert("f(")
     insert("yB")
@@ -170,7 +128,7 @@ bring <number_small> funk:
 # yankee are commands are for copying the remaining line from a given point
 (yank line|copy row) <number_small>:
     user.vim_normal_mode_exterm()
-    user.move_up("{number_small}")
+    user.move_up(number_small)
     user.move_to_column_zero()
     user.yank_to_end_of_line()
     user.vim_command_mode(":let @+=substitute(strtrans(@+), '\\_s\\{{2,}}', '', 'g')\n")
@@ -185,9 +143,9 @@ bring <number_small> funk:
 
 (yank line (last <number_small> | <number_small> last)|copy last paint row <number_small>):
     user.vim_normal_mode_exterm()
-    user.move_up("{number_small}")
+    user.move_up(number_small)
     insert("$T ")
-    insert("yE")
+    user.yank_to_end_of_word()
     user.vim_set_insert_mode()
 
 yank line command:
@@ -208,7 +166,7 @@ python escape: key(ctrl-])
 pivot line <number_small>:
     insert("cd ")
     user.vim_normal_mode_exterm()
-    user.move_up("{number_small}")
+    user.move_up(number_small)
     user.move_to_column_zero()
     user.yank_to_end_of_line()
     user.vim_command_mode(":let @+=substitute(strtrans(@+), '\\_s\\{{2,}}', '', 'g')\n")
@@ -219,7 +177,7 @@ pivot line <number_small>:
 pivot river <number_small>:
     insert("cd ")
     user.vim_normal_mode_exterm()
-    user.move_up("{number_small}")
+    user.move_up(number_small)
     user.move_to_column_zero()
     key(ctrl-w)
     key(f)
@@ -227,26 +185,26 @@ pivot river <number_small>:
 pivot pillar <number_small>:
     insert("cd ")
     user.vim_normal_mode_exterm()
-    user.move_up("{number_small}")
+    user.move_up(number_small)
     user.move_to_column_zero()
     user.vim_command_mode(":vertical wincmd f\n")
 
 edit line <number_small>:
     user.vim_normal_mode_exterm()
-    user.move_up("{number_small}")
+    user.move_up(number_small)
     user.move_to_column_zero()
     insert("gf")
 
 river line <number_small>:
     user.vim_normal_mode_exterm()
-    user.move_up("{number_small}")
+    user.move_up(number_small)
     user.move_to_column_zero()
     key('ctrl-w')
     key('f')
 
 pillar line <number_small>:
     user.vim_normal_mode_exterm()
-    user.move_up("{number_small}")
+    user.move_up(number_small)
     user.move_to_column_zero()
     user.vim_command_mode(":vertical wincmd f\n")
 
@@ -260,7 +218,7 @@ folder yank merge <number_small>:
 
 process kill line <number_small>:
     user.vim_normal_mode_exterm()
-    user.move_up("{number_small}")
+    user.move_up(number_small)
     key('0 w y e')
     user.vim_set_insert_mode()
     insert("kill -9 ")

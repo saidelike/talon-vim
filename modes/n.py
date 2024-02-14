@@ -48,3 +48,28 @@ class Actions:
             actions.insert(":set hlsearch\n")
         else:
             actions.insert(":set nohlsearch\n")
+
+    def move_next_word(n: int):
+        """move to the next WORD(=paint) n times on the current line from the current position: {n}W"""
+        # see :h WORDS
+        # A WORD consists of a sequence of non-blank characters, separated with white
+        # space.  An empty line is also considered to be a WORD.
+        # see :h W
+        # 0 means do nothing, 1 means move to the next word, etc.
+        if n > 0:
+            actions.insert(f"{n}W")
+
+    def yank_to_end_of_word():
+        """yank to the end of the current WORD(=paint): yE"""
+        # see :h E
+        # Forward to the end of WORD [count] |inclusive|.
+        # Does not stop in an empty line.
+        actions.insert(f"yE")
+
+    def move_to_beginning_of_the_last_word():
+        """move to the beginning of the last WORD(=paint) of the line from the current position: '$T '"""
+        # see :h $
+        # To the end of the line.
+        # see :h T
+        # "T ": Till after first occurrence of the "space" to the left.
+        actions.insert(f"$T ")
