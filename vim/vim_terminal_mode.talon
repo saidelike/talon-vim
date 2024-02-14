@@ -38,28 +38,42 @@ yank words <number_small> <user.ordinals>: user.copy_paint_row(ordinals, number_
 bring words (last <number_small> | <number_small> last): user.bring_last_paint_row(number_small)
 
 
-# TODO: continue from here
+# TODO: seems not useful to port?
 
-# copy from the specified key to the end of the line
+# copy from the specified key to the end of the word
+# copy tail paint first glyph <user.key_unmodified> row <number_small>:
+# eg copy tail paint first glyph "air" row "five":
+# avoid having to count how many words, though not really reliable
+# due to the fact you have to check the key you say is not in a word before the one you target
 yank words <number_small> <user.key_unmodified>:
     user.vim_normal_mode_exterm()
     user.move_up(number_small)
     user.move_to_column_zero()
+    # see :h f
+    # To first occurrence of {char} to the right.
     insert("f{key_unmodified}")
     user.yank_to_end_of_word()
     user.vim_set_insert_mode()
 
+
+# copy a function name on the specified line
 # XXX - it would be nice to have this you something like treesitter on a single
 # line (even though it would be broken syntax) and be able to specify which
 # element we want...
-# copy a function name on the specified line
+# copy funk name row <number_small>:
 yank words <number_small> funk:
     user.vim_normal_mode_exterm()
     user.move_up(number_small)
     user.move_to_column_zero()
+    # see :h f
+    # To first occurrence of "left parenthesis" to the right.
     insert("f(")
+    # see :h B
+    # yank WORD(=paint) backward
     insert("yB")
     user.vim_set_insert_mode()
+
+# TODO: continue from here
 
 # echo commands are for copying words from a given point, and then pasting them
 bring <number_small>:
@@ -72,8 +86,9 @@ bring <number_small>:
     # \_s   - match single white space
     # \{2,} - at least two in a row
     user.vim_command_mode(":set nohls | let @+=substitute(strtrans(@+), '\\_s\\{{2,}}', '', 'g')\n")
+    user.paste_after_cursor()
     user.vim_set_insert_mode()
-    edit.paste()
+    # edit.paste()
     key(space)
 
 bring (last <number_small> | <number_small> last):
@@ -81,8 +96,9 @@ bring (last <number_small> | <number_small> last):
     user.move_up(number_small)
     insert("$T ")
     user.yank_to_end_of_word()
+    user.paste_after_cursor()
     user.vim_set_insert_mode()
-    edit.paste()
+    # edit.paste()
     key(space)
 
 bring <number_small> <user.ordinals>:
@@ -92,8 +108,9 @@ bring <number_small> <user.ordinals>:
     insert("{ordinals-1}W")
     user.yank_to_end_of_word()
 
+    user.paste_after_cursor()
     user.vim_set_insert_mode()
-    edit.paste()
+    # edit.paste()
     key(space)
 
 # copy from the specified key to the end of the line
@@ -104,8 +121,9 @@ bring <number_small> <user.key_unmodified>:
     insert("f{key_unmodified}")
     user.yank_to_end_of_word()
 
+    user.paste_after_cursor()
     user.vim_set_insert_mode()
-    edit.paste()
+    # edit.paste()
     # disable weird highlight
     key(down:5)
 
@@ -120,8 +138,9 @@ bring <number_small> funk:
     insert("f(")
     insert("yB")
 
+    user.paste_after_cursor()
     user.vim_set_insert_mode()
-    edit.paste()
+    # edit.paste()
     # disable weird highlight
     key(down:5)
 
@@ -170,8 +189,9 @@ pivot line <number_small>:
     user.move_to_column_zero()
     user.yank_to_end_of_line()
     user.vim_command_mode(":let @+=substitute(strtrans(@+), '\\_s\\{{2,}}', '', 'g')\n")
+    user.paste_after_cursor()
     user.vim_set_insert_mode()
-    edit.paste()
+    # edit.paste()
     key(enter)
 
 pivot river <number_small>:
