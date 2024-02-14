@@ -20,12 +20,12 @@ exit (terminal | term):
     insert("ZQ")
 
 # new spoken forms
-bring row <number_small>: user.bring_line(number_small)
+bring row <number_small>: user.bring_row(number_small)
 bring tail line fuzzy <user.text>: user.bring_tail_line_fuzzy(text)
 bring tail line fuzzy <user.text> row <number_small>: user.bring_tail_line_fuzzy_row(text, number_small)
 
 # old spoken forms
-bring line <number_small>: user.bring_line(number_small)
+bring line <number_small>: user.bring_row(number_small)
 bring line fuzzy <user.text>$: user.bring_tail_line_fuzzy(text)
 bring line <number_small> <user.text>: user.bring_tail_line_fuzzy_row(text, number_small)
 

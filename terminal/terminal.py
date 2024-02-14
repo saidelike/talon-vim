@@ -9,9 +9,10 @@ mod = Module()
 
 @mod.action_class
 class Actions:
-    def bring_line(row: int):
+    def bring_row(row: int):
         """bring the content of the specified line to the current position"""
         actions.user.vim_normal_mode_exterm()
+        actions.user.move_up(f"{row}")
         actions.user.move_to_column_zero()
         actions.user.yank_to_end_of_line()
         actions.user.paste_after_cursor()
