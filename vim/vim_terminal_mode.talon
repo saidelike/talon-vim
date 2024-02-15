@@ -1,7 +1,5 @@
 tag: user.vim_terminal_mode
 -
-# hacky for now so I can use the terminal
-tag(): terminal
 
 normal [mode]: key(ctrl-\ ctrl-n)
 pop (terminal | term): key(ctrl-\ ctrl-n)
