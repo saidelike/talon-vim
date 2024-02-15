@@ -24,6 +24,7 @@ def rpc_get_mode_main(window):
         print(
             f"title_parse_TERM(): Skipping due to not active window: {window} != {ui.active_window()}"
         )
+        # we're not updating the tags because we don't want to do it for another focused app
         return
 
     # this is mostly an optimization to avoid unnecessary calls but sometimes because it fails to set the right mode,

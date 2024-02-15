@@ -8,45 +8,66 @@ mod = Module()
 
 ctx = Context()
 
-ctx_terminal = Context()
-ctx_terminal.matches = r"""
-tag: user.vim_terminal_mode
-"""
+
+@mod.action_class
+class Actions:
+    def title_parse_TERM_current_window():
+        """Enforce parsing the title of the current window in order to refresh the terminal features"""
+        window = ui.active_window()
+        print(f"title_parse_TERM_current_window(): window={window}")
+        title_parse_TERM(window)
+
 
 last_title = None
 last_window = None
 
 
 def title_parse_TERM(window):
-    """check if neovim window is focused and enable/disable monitoring the
-    vim features by parsing the shell command from the embedded terminal title.
+    """check if neovim window is focused, check what vim features to enable
+    by parsing the shell command from the embedded terminal title.
     """
     global last_window, last_title
 
     current_title = window.title
-    if not current_title.startswith("VIM MODE:"):
-        print("title_parse_TERM(): Skipping due to not in neovim")
+
+    # this is needed to avoid any call due to background applications that would reset the tags to [],
+    # which will basically unset the previously set tags for the neovim window
+    if window != ui.active_window():
+        print(
+            f"title_parse_TERM(): Skipping due to not active window: {window} != {ui.active_window()}"
+        )
+        # we're not updating the tags because we don't want to do it for another focused app
         return
 
-    if last_window == window and last_title == current_title:
-        print("title_parse_TERM(): Skipping due to duplicate window/title")
+    # this is mostly an optimization to avoid unnecessary calls but sometimes because it fails to set the right mode,
+    # it is better to call it every time to make sure it's taken into account
+    # if last_window == window and last_title == current_title:
+    #     print("rpc_get_mode_main(): Skipping due to duplicate window/title")
+    #     return
+
+    # this is to make sure we are actually focusing neovim
+    # NOTE: this check is not working for the commandline version yet due to the windows title not containing "VIM MODE:" yet
+    if not current_title.startswith("VIM MODE:"):
+        # print("title_parse_TERM(): Skipping due to not in neovim")
+        ctx.tags = []
         return
-    if (
-        window != ui.active_window()
-        or not current_title.startswith("VIM MODE:t")
-        or "TERM:" not in current_title
-    ):
+
+    # this is to check if we are not in the terminal anymore (eg due to a change of mode or in another split)
+    if "TERM:" not in current_title:
         print("title_parse_TERM(): Skipping due to not a terminal")
+        ctx.tags = []
         return
 
     last_window = window
     last_title = current_title
 
+    print(f"title_parse_TERM(): current_title={current_title}")
+
     shell_command = title_parse_shell_command(current_title)
 
     tags = title_set_tags(shell_command, current_title)
     print(f"title_parse_TERM(): setting shell tags: {tags}")
-    ctx_terminal.tags = tags
+    ctx.tags = tags
 
     title_set_languages(shell_command)
 
@@ -184,12 +205,12 @@ def title_set_languages(shell_command):
 
 
 def title_win_title_hook(window):
-    print(f"title_win_title_hook(window={window})")
+    # print(f"title_win_title_hook(window={window})")
     title_parse_TERM(window)
 
 
 def title_win_focus_hook(window):
-    print(f"title_win_focus_hook(window={window})")
+    # print(f"title_win_focus_hook(window={window})")
     title_parse_TERM(window)
 
 
