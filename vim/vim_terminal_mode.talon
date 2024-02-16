@@ -17,42 +17,7 @@ exit (terminal | term):
     key(ctrl-n)
     insert("ZQ")
 
-# new spoken forms
-bring row <number_small>: user.bring_row(number_small)
-bring tail line fuzzy <user.text>: user.bring_tail_line_fuzzy(text)
-bring tail line fuzzy <user.text> row <number_small>: user.bring_tail_line_fuzzy_row(text, number_small)
-bring tail line <user.ordinals> paint row <number_small>: user.bring_tail_line_paint_row(ordinals, number_small)
-copy <user.ordinals> paint row <number_small>: user.copy_paint_row(ordinals, number_small)
-# the code could be refactored with "copy last paint row <number_small>"
-bring last paint row <number_small>: user.bring_last_paint_row(number_small)
-
-# old spoken forms
-bring line <number_small>: user.bring_row(number_small)
-bring line fuzzy <user.text>$: user.bring_tail_line_fuzzy(text)
-bring line <number_small> <user.text>: user.bring_tail_line_fuzzy_row(text, number_small)
-bring line <number_small> <user.ordinals>: user.bring_tail_line_paint_row(ordinals, number_small)
-yank words <number_small>: user.copy_paint_row(1, number_small)
-yank words <number_small> <user.ordinals>: user.copy_paint_row(ordinals, number_small)
-bring words (last <number_small> | <number_small> last): user.bring_last_paint_row(number_small)
-
-
-# TODO: seems not useful to port?
-
-# copy from the specified key to the end of the word
-# copy tail paint first glyph <user.key_unmodified> row <number_small>:
-# eg copy tail paint first glyph "air" row "five":
-# avoid having to count how many words, though not really reliable
-# due to the fact you have to check the key you say is not in a word before the one you target
-yank words <number_small> <user.key_unmodified>:
-    user.vim_normal_mode_exterm()
-    user.move_up(number_small)
-    user.move_to_column_zero()
-    # see :h f
-    # To first occurrence of {char} to the right.
-    insert("f{key_unmodified}")
-    user.yank_to_end_of_word()
-    user.vim_set_insert_mode()
-
+# TODO: seems not useful to port here? or move to different file?
 
 # copy a function name on the specified line
 # XXX - it would be nice to have this you something like treesitter on a single
@@ -71,64 +36,11 @@ yank words <number_small> funk:
     insert("yB")
     user.vim_set_insert_mode()
 
-# TODO: continue from here
-
-# echo commands are for copying words from a given point, and then pasting them
-bring <number_small>:
-    #    user.vim_terminal_echo_line_number("{number_small}")
-    user.vim_normal_mode_exterm()
-    user.move_up(number_small)
-    user.move_to_column_zero()
-    user.yank_to_end_of_word()
-    # See `:help pattern`
-    # \_s   - match single white space
-    # \{2,} - at least two in a row
-    user.vim_command_mode(":set nohls | let @+=substitute(strtrans(@+), '\\_s\\{{2,}}', '', 'g')\n")
-    user.paste_after_cursor()
-    user.vim_set_insert_mode()
-    # edit.paste()
-    key(space)
-
-bring (last <number_small> | <number_small> last):
-    user.vim_normal_mode_exterm()
-    user.move_up(number_small)
-    insert("$T ")
-    user.yank_to_end_of_word()
-    user.paste_after_cursor()
-    user.vim_set_insert_mode()
-    # edit.paste()
-    key(space)
-
-bring <number_small> <user.ordinals>:
-    user.vim_normal_mode_exterm()
-    user.move_up(number_small)
-    user.move_to_column_zero()
-    insert("{ordinals-1}W")
-    user.yank_to_end_of_word()
-
-    user.paste_after_cursor()
-    user.vim_set_insert_mode()
-    # edit.paste()
-    key(space)
-
-# copy from the specified key to the end of the line
-bring <number_small> <user.key_unmodified>:
-    user.vim_normal_mode_exterm()
-    user.move_up(number_small)
-    user.move_to_column_zero()
-    insert("f{key_unmodified}")
-    user.yank_to_end_of_word()
-
-    user.paste_after_cursor()
-    user.vim_set_insert_mode()
-    # edit.paste()
-    # disable weird highlight
-    key(down:5)
-
+# copy a function name on the specified line
 # XXX - it would be nice to have this you something like treesitter on a single
 # line (even though it would be broken syntax) and be able to specify which
 # element we want...
-# copy a function name on the specified line
+# bring funk name row <number_small>:
 bring <number_small> funk:
     user.vim_normal_mode_exterm()
     user.move_up(number_small)
@@ -142,28 +54,8 @@ bring <number_small> funk:
     # disable weird highlight
     key(down:5)
 
-# yankee are commands are for copying the remaining line from a given point
-(yank line|copy row) <number_small>:
-    user.vim_normal_mode_exterm()
-    user.move_up(number_small)
-    user.move_to_column_zero()
-    user.yank_to_end_of_line()
-    user.vim_command_mode(":let @+=substitute(strtrans(@+), '\\_s\\{{2,}}', '', 'g')\n")
-    user.vim_set_insert_mode()
+# TODO: continue from here
 
-(yank line <number_small> <user.ordinals>|copy tail line <user.ordinals> paint row <number_small>):
-    uservim_normal_mode_exterm("{number_small}k")
-    user.move_to_column_zero()
-    insert("{ordinals-1}W")
-    user.yank_to_end_of_line()
-    user.vim_set_insert_mode()
-
-(yank line (last <number_small> | <number_small> last)|copy last paint row <number_small>):
-    user.vim_normal_mode_exterm()
-    user.move_up(number_small)
-    insert("$T ")
-    user.yank_to_end_of_word()
-    user.vim_set_insert_mode()
 
 yank line command:
     user.vim_normal_mode_exterm("0f y$")
@@ -175,11 +67,12 @@ yank line command:
     # note that you can't use this from within command line itself, because the
     # terminal may not trigger depending on what the interactive command is. who
     # had actually needs to be global
+
 python escape: key(ctrl-])
 
 # this assumes you list some directories with find or whatever, then you want
-# to pivot into one of them beasts on what was listed. you say the relative
-# number, in it will jump to that point copy the line and then jump you in
+# to pivot into one of them based on what was listed. you say the relative
+# number, and it will jump to that point, copy the line and then jump you in
 pivot line <number_small>:
     insert("cd ")
     user.vim_normal_mode_exterm()
@@ -234,11 +127,20 @@ folder yank merge <number_small>:
     user.vim_command_mode(":let @+ .= substitute(strtrans(getline('.')), '\\_s\\{{2,}}', '', 'g')\n")
     user.vim_set_insert_mode()
 
+
+# TODO: seems not useful to port here? or move to different file?
+
+# this assumes you executed the "ps" command
+# $ ps
+#        PID    PPID    PGID     WINPID   TTY         UID    STIME COMMAND
+#       1886       1    1886      14988  cons3     197610   Feb  8 /usr/bin/bash
+#  S    2355    2222    2355      34704  cons5     197610 16:06:25 /usr/bin/bash
+# TODO: what cursorless command could we use?
 process kill line <number_small>:
+    insert("kill -9 ")
     user.vim_normal_mode_exterm()
     user.move_up(number_small)
     key('0 w y e')
+    user.paste_after_cursor()
     user.vim_set_insert_mode()
-    insert("kill -9 ")
-    edit.paste()
     key(right)
