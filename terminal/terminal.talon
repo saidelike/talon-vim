@@ -1,4 +1,7 @@
 tag: user.vim_terminal_mode
+
+tag: user.vim_normal_mode
+and win.title: /VIM MODE:nt/
 -
 
 # Cursorless spoken forms

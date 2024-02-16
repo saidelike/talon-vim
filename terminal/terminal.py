@@ -1,4 +1,5 @@
 from talon import Module, Context, actions
+from ..vim.vim import VimError
 
 from enum import Enum
 
@@ -38,7 +39,7 @@ class Actions:
 
     def act_tail_line_fuzzy(action_type: ActionType, text: str, row: int = None):
         """act on the content of the (potentially specified) line from the text found with fuzzy search"""
-        actions.user.vim_normal_mode_exterm()
+        ret = actions.user.vim_normal_mode_exterm()
         if row is not None:
             actions.user.move_up(row)
             actions.user.move_to_column_zero()
@@ -49,7 +50,9 @@ class Actions:
         # this doesn't seem to be needed (on Windows)
         # actions.user.highlights_matches_from_previous_search(False)
         if action_type == ActionType.COPY:
-            actions.user.vim_set_insert_mode()
+            # do not go back to terminal mode if we were currently scrolling in normal mode
+            if ret == VimError.SUCCESS:
+                actions.user.vim_set_insert_mode()
         elif action_type == ActionType.BRING:
             actions.user.paste_after_cursor()
             actions.user.vim_set_insert_mode()
@@ -85,7 +88,7 @@ class Actions:
         action_type: ActionType, paint: int, row: int, tail_line: bool = False
     ):
         """act on the nth paint of the specified line"""
-        actions.user.vim_normal_mode_exterm()
+        ret = actions.user.vim_normal_mode_exterm()
         actions.user.move_up(row)
         if paint >= 0:
             actions.user.move_to_column_zero()
@@ -105,7 +108,9 @@ class Actions:
             # actions.user.vim_command_mode(":set nohls | let @+=substitute(strtrans(@+), '\\_s\\{{2,}}', '', 'g')\n")
             actions.user.yank_to_end_of_word()
         if action_type == ActionType.COPY:
-            actions.user.vim_set_insert_mode()
+            # do not go back to terminal mode if we were currently scrolling in normal mode
+            if ret == VimError.SUCCESS:
+                actions.user.vim_set_insert_mode()
         elif action_type == ActionType.BRING:
             actions.user.paste_after_cursor()
             actions.user.vim_set_insert_mode()
@@ -124,13 +129,15 @@ class Actions:
 
     def act_row(action_type: ActionType, row: int):
         """act on the specified line"""
-        actions.user.vim_normal_mode_exterm()
+        ret = actions.user.vim_normal_mode_exterm()
         actions.user.move_up(row)
         actions.user.move_to_column_zero()
         actions.user.yank_to_end_of_line()
         # user.vim_command_mode(":let @+=substitute(strtrans(@+), '\\_s\\{{2,}}', '', 'g')\n")
         if action_type == ActionType.COPY:
-            actions.user.vim_set_insert_mode()
+            # do not go back to terminal mode if we were currently scrolling in normal mode
+            if ret == VimError.SUCCESS:
+                actions.user.vim_set_insert_mode()
         elif action_type == ActionType.BRING:
             actions.user.paste_after_cursor()
             actions.user.vim_set_insert_mode()
@@ -166,7 +173,7 @@ class Actions:
         action_type: ActionType, glyph: str, row: int, tail_paint: bool = False
     ):
         """act on the first found paint containing the key/letter(=glyph) in the specified line"""
-        actions.user.vim_normal_mode_exterm()
+        ret = actions.user.vim_normal_mode_exterm()
         actions.user.move_up(row)
         actions.user.move_to_column_zero()
         actions.user.find_character(glyph)
@@ -175,7 +182,9 @@ class Actions:
         else:
             actions.user.yank_current_word()
         if action_type == ActionType.COPY:
-            actions.user.vim_set_insert_mode()
+            # do not go back to terminal mode if we were currently scrolling in normal mode
+            if ret == VimError.SUCCESS:
+                actions.user.vim_set_insert_mode()
         elif action_type == ActionType.BRING:
             actions.user.paste_after_cursor()
             actions.user.vim_set_insert_mode()

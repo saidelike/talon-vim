@@ -3,6 +3,7 @@
 import logging
 import pprint
 import time
+from enum import Enum
 
 from talon import Context, Module, actions, app, settings, ui
 
@@ -37,6 +38,13 @@ and app.exe: nvim-qt.exe
 ctx.matches = r"""
 app: vim
 """
+
+
+class VimError(Enum):
+    SUCCESS = 0
+    SUCCESS_MODE_ALREADY_SET = 1
+    ERROR_MODE_ADJUSTMENT_SKIPPED = 2
+
 
 # talon vim plugins. see apps/vim/plugins/
 # to enable plugins you'll want to set these inside the corresponding mode
@@ -957,11 +965,12 @@ class Actions:
         escape from terminal mode"""
         print(f"vim_normal_mode_exterm()")
         v = VimMode()
-        v.set_normal_mode_exterm()
+        ret = v.set_normal_mode_exterm()
         if cmd is not None:
             print(f"vim_normal_mode_exterm(): cmd={cmd} ")
             actions.insert(cmd)
         print(f"-------------------")
+        return ret
 
     def vim_normal_mode_exterm_preserve(cmd: str):
         """run a given list of commands in normal mode, escape from terminal
@@ -1403,57 +1412,57 @@ class VimMode:
             actions.key("enter")
 
     def set_normal_mode(self, auto=True):
-        self.adjust_mode(self.NORMAL, auto=auto)
+        return self.adjust_mode(self.NORMAL, auto=auto)
 
     def set_normal_mode_exterm(self):
         print(f"set_normal_mode_exterm()")
-        self.adjust_mode(self.NORMAL, escape_terminal=True)
+        return self.adjust_mode(self.NORMAL, escape_terminal=True)
 
     # XXX - revisit auto, maybe have separate method version or something
     def set_normal_mode_np(self, auto=True):
         print(f"set_normal_mode_np()")
-        self.adjust_mode(self.NORMAL, no_preserve=True, auto=auto)
+        return self.adjust_mode(self.NORMAL, no_preserve=True, auto=auto)
 
     def set_visual_mode(self):
-        self.adjust_mode(self.VISUAL)
+        return self.adjust_mode(self.VISUAL)
 
     def set_visual_mode_np(self):
-        self.adjust_mode(self.VISUAL, no_preserve=True)
+        return self.adjust_mode(self.VISUAL, no_preserve=True)
 
     def set_visual_line_mode(self):
-        self.adjust_mode(self.VISUAL_LINE)
+        return self.adjust_mode(self.VISUAL_LINE)
 
     def set_visual_block_mode(self):
-        self.adjust_mode(self.VISUAL_BLOCK)
+        return self.adjust_mode(self.VISUAL_BLOCK)
 
     def set_insert_mode(self):
-        self.adjust_mode(self.INSERT)
+        return self.adjust_mode(self.INSERT)
 
     def set_terminal_mode(self):
         print("set_terminal_mode()")
-        self.adjust_mode(self.TERMINAL)
+        return self.adjust_mode(self.TERMINAL)
 
     def set_command_mode(self):
-        self.adjust_mode(self.COMMAND_LINE)
+        return self.adjust_mode(self.COMMAND_LINE)
 
     def set_command_mode_exterm(self):
-        self.adjust_mode(self.COMMAND_LINE, escape_terminal=True)
+        return self.adjust_mode(self.COMMAND_LINE, escape_terminal=True)
 
     def set_replace_mode(self):
-        self.adjust_mode(self.REPLACE)
+        return self.adjust_mode(self.REPLACE)
 
     def set_visual_replace_mode(self):
-        self.adjust_mode(self.VISUAL_REPLACE)
+        return self.adjust_mode(self.VISUAL_REPLACE)
 
     def set_any_motion_mode(self):
-        self.adjust_mode([self.NORMAL, self.VISUAL])
+        return self.adjust_mode([self.NORMAL, self.VISUAL])
 
     # XXX - this should accept additional modes, like visual block
     def set_any_motion_mode_exterm(self):
-        self.adjust_mode([self.NORMAL, self.VISUAL], escape_terminal=True)
+        return self.adjust_mode([self.NORMAL, self.VISUAL], escape_terminal=True)
 
     def set_any_motion_mode_np(self):
-        self.adjust_mode(self.NORMAL, no_preserve=True)
+        return self.adjust_mode(self.NORMAL, no_preserve=True)
 
     def adjust_mode(
         self, valid_mode_ids, no_preserve=False, escape_terminal=False, auto=True
@@ -1463,7 +1472,7 @@ class VimMode:
         )
         if auto is True and settings.get("user.vim_adjust_modes") == 0:
             print(f"skipping mode adjustment")
-            return
+            return VimError.ERROR_MODE_ADJUSTMENT_SKIPPED
 
         cur = self.current_mode_id()
         print(f"adjust_mode(): current mode: {cur}")
@@ -1482,8 +1491,10 @@ class VimMode:
             )
             # Trigger / untrigger mode-related talon grammars
             self.set_mode_tag(valid_mode_ids[0])
+            return VimError.SUCCESS
         else:
             print(f"adjust_mode(): skipping setting mode because not needed")
+            return VimError.SUCCESS_MODE_ALREADY_SET
 
     # Often I will say `delete line` and it will trigger `@delete` and `@nine`.
     # This then keys 9. I then say `undo` to fix the bad delete, which does 9
