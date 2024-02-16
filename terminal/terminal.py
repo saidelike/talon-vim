@@ -4,6 +4,7 @@ mod = Module()
 mod.tag("vim_terminal_cmd", desc="Tag for cmd.exe in vim terminal")
 mod.tag("vim_terminal_repl", desc="Tag for Talon REPL in vim terminal")
 mod.tag("vim_terminal_wsl", desc="Tag for wsl in vim terminal")
+mod.tag("vim_terminal_git_bash", desc="Tag for git bash in vim terminal")
 
 # ctx = Context()
 # ctx.matches = r"""
