@@ -1,8 +1,8 @@
-from talon import Context, Module, actions, app, cron, settings, ui
-
 import re
 import time
 from timeit import default_timer as timer
+
+from talon import Context, Module, actions, app, cron, settings, ui
 
 mod = Module()
 

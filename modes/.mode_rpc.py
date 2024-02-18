@@ -1,4 +1,5 @@
-from talon import Context, Module, actions, app, ui, cron, settings
+from talon import Context, Module, actions, app, cron, settings, ui
+
 from ..vim.vim import VimMode
 
 ctx = Context()

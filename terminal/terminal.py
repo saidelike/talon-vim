@@ -1,7 +1,8 @@
-from talon import Module, Context, actions
-from ..vim.vim import VimError
-
 from enum import Enum
+
+from talon import Context, Module, actions
+
+from ..vim.vim import VimError
 
 mod = Module()
 

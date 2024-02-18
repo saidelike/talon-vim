@@ -1,14 +1,18 @@
 tag: user.vim_terminal_mode
 -
 
-normal [mode]: key(ctrl-\ ctrl-n)
-pop (terminal | term): key(ctrl-\ ctrl-n)
-poppy: key(ctrl-\ ctrl-n)
+normal [mode]:
+    key(ctrl-\ ctrl-n)
+pop (terminal | term):
+    key(ctrl-\ ctrl-n)
+poppy:
+    key(ctrl-\ ctrl-n)
 
 # pop terminal mode and scroll up once, from this point onward you can scroll
 # like normal
 # TODO: not working
-scroll up: key(ctrl-\ ctrl-n ctrl-b)
+scroll up:
+    key(ctrl-\ ctrl-n ctrl-b)
 
 # this causes exclusive terminal windows to exit without requiring key press or
 # dropping to a new empty buffer
@@ -56,7 +60,6 @@ bring <number_small> funk:
 
 # TODO: continue from here
 
-
 yank line command:
     user.vim_normal_mode_exterm("0f y$")
     user.vim_command_mode(":let @+=substitute(strtrans(@+), '\\_s\\{{2,}}', '', 'g')\n")
@@ -68,7 +71,8 @@ yank line command:
     # terminal may not trigger depending on what the interactive command is. who
     # had actually needs to be global
 
-python escape: key(ctrl-])
+python escape:
+    key(ctrl-])
 
 # this assumes you list some directories with find or whatever, then you want
 # to pivot into one of them based on what was listed. you say the relative
@@ -126,7 +130,6 @@ folder yank merge <number_small>:
     user.vim_normal_mode("{number_small}k0")
     user.vim_command_mode(":let @+ .= substitute(strtrans(getline('.')), '\\_s\\{{2,}}', '', 'g')\n")
     user.vim_set_insert_mode()
-
 
 # TODO: seems not useful to port here? or move to different file?
 

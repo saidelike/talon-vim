@@ -1,3 +1,3 @@
-win.title:/VIM MODE:t/
+win.title: /VIM MODE:t/
 -
 tag(): user.vim_terminal_mode
