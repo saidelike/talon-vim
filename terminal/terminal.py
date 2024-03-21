@@ -5,6 +5,22 @@ from talon import Context, Module, actions
 from ..vim.vim import VimError
 
 mod = Module()
+ctx_normal_terminal = Context()
+
+
+ctx_normal_terminal.matches = r"""
+tag: user.vim_normal_mode
+and win.title: /VIM MODE:nt/
+"""
+
+
+# this allows using "bring" in normal terminal mode and that will insert
+# into the previous position in the terminal mode
+@ctx_normal_terminal.action_class("main")
+class MainActions:
+    def insert(text):
+        actions.user.vim_set_insert_mode()
+        actions.next(text)
 
 
 class TargetType(Enum):
