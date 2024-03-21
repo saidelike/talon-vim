@@ -606,8 +606,9 @@ find (reversed | previous) <user.ordinals> <user.key_unmodified>:
 ###
 make (ascending | number list | incrementing):
     user.vim_normal_mode_key("g ctrl-a")
-take line:
-    user.vim_visual_mode("V")
+# this conflicts with cursorless-neovim so disabling it for now
+# take line:
+#     user.vim_visual_mode("V")
 block take:
     user.vim_any_motion_mode_exterm_key("ctrl-v")
 
@@ -628,9 +629,10 @@ block take lines <number> through <number>:
     user.vim_set_visual_block_mode()
     insert("{number_2}G")
 
-take <number_small> lines:
-    user.vim_set_visual_line_mode()
-    insert("{number_small-1}j")
+# disabling because it conflicts with cursorless because it works
+# take <number_small> lines:
+#     user.vim_set_visual_line_mode()
+#     insert("{number_small-1}j")
 
 block take <number_small> lines:
     user.vim_set_visual_block_mode()
