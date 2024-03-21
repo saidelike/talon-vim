@@ -312,7 +312,7 @@ new vertical right below split:
 new vertical (bot | bottom) right split:
     user.vim_command_mode_exterm(":vertical bo split\n")
 
-    # open specified buffer in new split
+# open specified buffer in new split
 split (buf | buffer) <number_small>:
     user.vim_set_normal_mode_exterm()
     insert("{number_small}")
