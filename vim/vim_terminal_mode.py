@@ -32,8 +32,16 @@ class EditActions:
         actions.user.vim_normal_mode_exterm("V")
         time.sleep(1)
 
+    # def paste():
+    #     actions.key("ctrl-shift-v")
+    # https://stackoverflow.com/questions/54734173/how-to-copy-and-paste-in-vims-terminal-mode
     def paste():
-        actions.key("ctrl-shift-v")
+        actions.user.vim_normal_mode_exterm()
+        # actions.key("ctrl-v")
+        actions.next()
+        actions.user.vim_set_insert_mode()
+
+
 
 
 # @mod.action_class

@@ -95,26 +95,27 @@ class EditActions:
     # Note following two are for mouse/highlighted copy/paste. shouldn't be
     # used for actual vim commands
 
-    def copy():
-        actions.key("ctrl-shift-c")
+    # def copy():
+    #     actions.key("ctrl-shift-c")
 
-    def paste():
-        # actions.user.vim_normal_mode("p")
-        actions.key("ctrl-shift-v")
-        # NOTE: There is it delay that happens inside of vim that can cause out
-        # of order key pressing, in it seems to be that it's because the output
-        # of this key press actually happens after other key presses start
-        # getting interpreted? in example would be "sit graves pasty round".
-        # typically the output of this will be something like:
-        # `(<pasted content>)`
-        # but the intended output would be
-        # `<pasted content>()`
-        # for now the only way i see to fix this is to introduce an artificial
-        # delay to allow vim to actually paste the content...
-        # time.sleep(0.800)
-        #  XXX - This might be one solution for it, but i haven't got it to
-        #  work yet
-        # actions.user.vim_normal_mode('"+p')
+    # def paste():
+    #     # actions.user.vim_normal_mode("p")
+    #     # actions.key("ctrl-shift-v")
+    #     actions.key("ctrl-v")
+    #     # NOTE: There is it delay that happens inside of vim that can cause out
+    #     # of order key pressing, in it seems to be that it's because the output
+    #     # of this key press actually happens after other key presses start
+    #     # getting interpreted? in example would be "sit graves pasty round".
+    #     # typically the output of this will be something like:
+    #     # `(<pasted content>)`
+    #     # but the intended output would be
+    #     # `<pasted content>()`
+    #     # for now the only way i see to fix this is to introduce an artificial
+    #     # delay to allow vim to actually paste the content...
+    #     # time.sleep(0.800)
+    #     #  XXX - This might be one solution for it, but i haven't got it to
+    #     #  work yet
+    #     # actions.user.vim_normal_mode('"+p')
 
 
 @ctx.action_class("user")

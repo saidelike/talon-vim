@@ -1393,10 +1393,11 @@ class VimMode:
             return "user.vim_command_mode"
 
     def insert_text(self, text):
-        if app.platform == "linux":
-            actions.user.paste(text)
-        else:
-            actions.insert(text)
+        actions.user.paste(text)
+        # if app.platform == "linux":
+        #     actions.user.paste(text)
+        # else:
+        #     actions.insert(text)
 
     def insert_command_mode_command(self, cmd):
         """prepare the command to be pasted into command mode"""

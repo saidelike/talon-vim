@@ -7,6 +7,8 @@ tag: user.vim_command_mode
 -
 # We assume that the user may want to use lua in the commandline, so we include some
 tag(): user.lua_nvim
+# this is needed on Windows to be able to use "word hello" in command mode
+tag(): user.insert_paste_disabled
 
 paste register <user.key>:
     key(ctrl-r {key})
