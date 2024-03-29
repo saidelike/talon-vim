@@ -1,5 +1,5 @@
 from talon import Module
-from ..vim.vim import VimMode
+from ...vim.vim import VimMode
 
 mod = Module()
 

@@ -1,6 +1,6 @@
 from talon import Context, Module, actions, app, settings, ui
 
-from ..vim.vim import VimMode
+from ...vim.vim import VimMode
 
 mod = Module()
 
