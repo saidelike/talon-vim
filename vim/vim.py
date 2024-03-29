@@ -28,6 +28,14 @@ and win.title: /Neovim/
 and app.exe: nvim.exe
 
 os: windows
+and win.title: /VIM MODE/
+and app.exe: nvim.exe
+
+os: windows
+and win.title: /VIM MODE/
+and app.exe: conhost.exe
+
+os: windows
 and win.title: /Neovim/
 and app.exe: conhost.exe
 
