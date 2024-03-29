@@ -9,7 +9,7 @@ ctx_normal_terminal = Context()
 
 
 ctx_normal_terminal.matches = r"""
-tag: user.vim_normal_mode
+tag: user.vim_mode_normal
 and win.title: /VIM MODE:nt/
 """
 
@@ -19,7 +19,7 @@ and win.title: /VIM MODE:nt/
 @ctx_normal_terminal.action_class("main")
 class MainActions:
     def insert(text):
-        actions.user.vim_set_insert_mode()
+        actions.user.vim_set_insert()
         actions.next(text)
 
 
@@ -56,7 +56,7 @@ class Actions:
 
     def act_tail_line_fuzzy(action_type: ActionType, text: str, row: int = None):
         """act on the content of the (potentially specified) line from the text found with fuzzy search"""
-        ret = actions.user.vim_normal_mode_exterm()
+        ret = actions.user.vim_run_normal_exterm()
         if row is not None:
             actions.user.move_up(row)
             actions.user.move_to_column_zero()
@@ -69,10 +69,10 @@ class Actions:
         if action_type == ActionType.COPY:
             # do not go back to terminal mode if we were currently scrolling in normal mode
             if ret == VimError.SUCCESS:
-                actions.user.vim_set_insert_mode()
+                actions.user.vim_set_insert()
         elif action_type == ActionType.BRING:
             actions.user.paste_after_cursor()
-            actions.user.vim_set_insert_mode()
+            actions.user.vim_set_insert()
             # append a space after the brought line
             actions.key("space")
 
@@ -105,7 +105,7 @@ class Actions:
         action_type: ActionType, paint: int, row: int, tail_line: bool = False
     ):
         """act on the nth paint of the specified line"""
-        ret = actions.user.vim_normal_mode_exterm()
+        ret = actions.user.vim_run_normal_exterm()
         actions.user.move_up(row)
         if paint >= 0:
             actions.user.move_to_column_zero()
@@ -122,15 +122,15 @@ class Actions:
             # See `:help pattern`
             # \_s   - match single white space
             # \{2,} - at least two in a row
-            # actions.user.vim_command_mode(":set nohls | let @+=substitute(strtrans(@+), '\\_s\\{{2,}}', '', 'g')\n")
+            # actions.user.vim_run_command(":set nohls | let @+=substitute(strtrans(@+), '\\_s\\{{2,}}', '', 'g')\n")
             actions.user.yank_to_end_of_word()
         if action_type == ActionType.COPY:
             # do not go back to terminal mode if we were currently scrolling in normal mode
             if ret == VimError.SUCCESS:
-                actions.user.vim_set_insert_mode()
+                actions.user.vim_set_insert()
         elif action_type == ActionType.BRING:
             actions.user.paste_after_cursor()
-            actions.user.vim_set_insert_mode()
+            actions.user.vim_set_insert()
             # append a space after the brought line
             actions.key("space")
 
@@ -146,18 +146,18 @@ class Actions:
 
     def act_row(action_type: ActionType, row: int):
         """act on the specified line"""
-        ret = actions.user.vim_normal_mode_exterm()
+        ret = actions.user.vim_run_normal_exterm()
         actions.user.move_up(row)
         actions.user.move_to_column_zero()
         actions.user.yank_to_end_of_line()
-        # user.vim_command_mode(":let @+=substitute(strtrans(@+), '\\_s\\{{2,}}', '', 'g')\n")
+        # user.vim_run_command(":let @+=substitute(strtrans(@+), '\\_s\\{{2,}}', '', 'g')\n")
         if action_type == ActionType.COPY:
             # do not go back to terminal mode if we were currently scrolling in normal mode
             if ret == VimError.SUCCESS:
-                actions.user.vim_set_insert_mode()
+                actions.user.vim_set_insert()
         elif action_type == ActionType.BRING:
             actions.user.paste_after_cursor()
-            actions.user.vim_set_insert_mode()
+            actions.user.vim_set_insert()
             # append a space after the brought line
             actions.key("space")
 
@@ -190,7 +190,7 @@ class Actions:
         action_type: ActionType, glyph: str, row: int, tail_paint: bool = False
     ):
         """act on the first found paint containing the key/letter(=glyph) in the specified line"""
-        ret = actions.user.vim_normal_mode_exterm()
+        ret = actions.user.vim_run_normal_exterm()
         actions.user.move_up(row)
         actions.user.move_to_column_zero()
         actions.user.find_character(glyph)
@@ -201,10 +201,10 @@ class Actions:
         if action_type == ActionType.COPY:
             # do not go back to terminal mode if we were currently scrolling in normal mode
             if ret == VimError.SUCCESS:
-                actions.user.vim_set_insert_mode()
+                actions.user.vim_set_insert()
         elif action_type == ActionType.BRING:
             actions.user.paste_after_cursor()
-            actions.user.vim_set_insert_mode()
+            actions.user.vim_set_insert()
             # append a space after the brought line
             actions.key("space")
             # this doesn't seem to be needed (on Windows)

@@ -17,12 +17,12 @@ the below I have tested on windows actually should work everywhere. this is beca
 
 ```talon
 bring (line|row) <number_small>:
-    user.vim_normal_mode_exterm("{number_small}k")
+    user.vim_run_normal_exterm("{number_small}k")
     key("0")
     insert("y$")
     # works on windows
     key('p')
-    user.vim_set_insert_mode()
+    user.vim_set_insert()
     # works on linux
     # edit.paste()
     key(space)

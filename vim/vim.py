@@ -120,12 +120,12 @@ for entry in plugin_tag_list:
 # TODO: add code for creating all of the contexts and associated mode assertions by doing what
 # we do in language_modes.py
 mode_tag_list = [
-    "vim_terminal_mode",
-    "vim_command_mode",
-    "vim_visual_mode",
-    "vim_normal_mode",
-    "vim_insert_mode",
-    "vim_select_mode",
+    "vim_mode_terminal",
+    "vim_mode_command",
+    "vim_mode_visual",
+    "vim_mode_normal",
+    "vim_mode_insert",
+    "vim_mode_select",
 ]
 for entry in mode_tag_list:
     mod.tag(entry, f"tag to load {entry} specific commands")
@@ -864,91 +864,97 @@ def vim_select_motion(m) -> str:
 #        scripting.core.MainActions.insert(text)
 
 
-# These are actions you can call from vim.talon via `user.method_name()` in
-# order to modify modes, run commands in specific modes, etc
+# Actions to modify/set modes
+# TODO: rename these function vim_mode_set_* or vim_mode_* instead of vim_set_*?
 @mod.action_class
 class Actions:
-    def vim_set_normal_mode():
+    def vim_set_normal():
         """set normal mode"""
         v = VimMode()
         v.set_normal_mode(auto=False)
+        return v
 
-    def vim_set_normal_mode_exterm():
+    def vim_set_normal_exterm():
         """set normal mode and don't preserve the previous mode"""
         v = VimMode()
         v.set_normal_mode_exterm()
+        return v
 
-    def vim_set_normal_mode_np():
+    def vim_set_normal_np():
         """set normal mode and don't preserve the previous mode"""
-        print("vim_set_normal_mode_np()")
+        print("vim_set_normal_np()")
         v = VimMode()
         v.set_normal_mode_np(auto=False)
+        return v
 
-    def vim_set_visual_mode():
+    def vim_set_visual():
         """set visual mode"""
         v = VimMode()
         v.set_visual_mode()
 
-    def vim_set_visual_line_mode():
+    def vim_set_visual_line():
         """set visual line mode"""
         v = VimMode()
         v.set_visual_line_mode()
+        return v
 
-    def vim_set_visual_block_mode():
+    def vim_set_visual_block():
         """set visual block mode"""
         v = VimMode()
         v.set_visual_block_mode()
 
-    def vim_set_insert_mode():
+    def vim_set_insert():
         """set insert mode"""
         v = VimMode()
         v.set_insert_mode()
+        return v
 
-    def vim_set_terminal_mode():
+    def vim_set_terminal():
         """set terminal mode"""
-        print("vim_set_terminal_mode()")
+        print("vim_set_terminal()")
         v = VimMode()
         v.set_terminal_mode()
+        return v
 
-    def vim_set_command_mode():
+    def vim_set_command():
         """set visual mode"""
         v = VimMode()
         v.set_command_mode()
+        return v
 
-    def vim_set_command_mode_exterm():
+    def vim_set_command_extern():
         """set visual mode"""
         v = VimMode()
         v.set_command_mode_exterm()
+        return v
 
-    def vim_set_replace_mode():
+    def vim_set_replace():
         """set visual mode"""
         v = VimMode()
         v.set_replace_mode()
+        return v
 
-    def vim_set_visual_replace_mode():
+    def vim_set_visual_replace():
         """set visual mode"""
         v = VimMode()
         v.set_visual_replace_mode()
+        return v
 
-    def vim_insert_mode(cmd: str):
+
+# Actions to run commands in specific modes
+@mod.action_class
+class Actions:
+    def vim_run_insert(cmd: str):
         """run a given list of commands in normal mode, preserve mode"""
-        v = VimMode()
-        v.set_insert_mode()
+        actions.user.vim_set_insert()
         actions.insert(cmd)
 
-    def vim_insert_mode_key(cmd: str):
+    def vim_run_insert_key(cmd: str):
         """run a given list of commands in normal mode, preserve mode"""
-        v = VimMode()
-        v.set_insert_mode()
+        actions.user.vim_set_insert()
         actions.key(cmd)
 
-    def vim_insert_mode_np(cmd: str):
-        """run a given list of commands in normal mode, don't preserve"""
-        v = VimMode()
-        v.set_insert_mode_np()
-        actions.insert(cmd)
-
-    def vim_normal_mode(cmd: str):
+    def vim_run_normal(cmd: str):
         """run a given list of commands in normal mode, preserve INSERT"""
         v = VimMode()
         # XXX - This needs to be abstracted for the case where we don't have
@@ -961,45 +967,36 @@ class Actions:
         vapi = VimAPI()
         vapi.api.run_normal_mode_command(cmd)
 
-    def vim_normal_mode_np(cmd: str):
+    def vim_run_normal_np(cmd: str):
         """run a given list of commands in normal mode, don't preserve
         INSERT"""
         v = VimMode()
         v.set_normal_mode_np()
         actions.insert(cmd)
 
-    def vim_normal_mode_exterm(cmd: str = None):
+    def vim_run_normal_exterm(cmd: str = None):
         """run a given list of commands in normal mode, don't preserve INSERT,
         escape from terminal mode"""
-        print(f"vim_normal_mode_exterm()")
-        v = VimMode()
-        ret = v.set_normal_mode_exterm()
+        print(f"vim_run_normal_exterm()")
+        actions.user.vim_set_normal_exterm()
         if cmd is not None:
-            print(f"vim_normal_mode_exterm(): cmd={cmd} ")
+            print(f"vim_run_normal_exterm(): cmd={cmd} ")
             actions.insert(cmd)
         print(f"-------------------")
         return ret
 
-    def vim_normal_mode_exterm_preserve(cmd: str):
-        """run a given list of commands in normal mode, escape from terminal
-        mode, but return to terminal mode after. Special case for settings"""
-        v = VimMode()
-        v.set_normal_mode_exterm()
-        actions.insert(cmd)
-
-    def vim_normal_mode_key(cmd: str):
+    def vim_run_normal_key(cmd: str):
         """press a given key in normal mode"""
         v = VimMode()
         v.set_normal_mode()
         actions.key(cmd)
 
-    def vim_normal_mode_exterm_key(cmd: str):
+    def vim_run_normal_exterm_key(cmd: str):
         """press a given key in normal mode, and escape terminal"""
-        v = VimMode()
-        v.set_normal_mode_exterm()
+        actions.user.vim_set_normal_exterm()
         actions.key(cmd)
 
-    def vim_normal_mode_keys(keys: str):
+    def vim_run_normal_keys(keys: str):
         """press a given list of keys in normal mode"""
         v = VimMode()
         v.set_normal_mode()
@@ -1007,23 +1004,21 @@ class Actions:
             # print(key)
             actions.key(key)
 
-    def vim_normal_mode_exterm_keys(keys: str, term_return: str = "False"):
+    def vim_run_normal_exterm_keys(keys: str, term_return: str = "False"):
         """press a given list of keys in normal mode"""
-        v = VimMode()
-        v.set_normal_mode_exterm()
+        v = actions.user.vim_set_normal_exterm()
         for key in keys.split(" "):
             # print(key)
             actions.key(key)
         if term_return == "True":
             v.set_insert_mode()
 
-    def vim_visual_mode(cmd: str):
+    def vim_run_visual(cmd: str):
         """run a given list of commands in visual mode"""
-        v = VimMode()
-        v.set_visual_mode()
+        actions.user.vim_set_visual()
         actions.insert(cmd)
 
-    def vim_command_mode(cmd: str):
+    def vim_run_command(cmd: str):
         """run string of commands in command line mode.
 
         Preserves INSERT
@@ -1031,7 +1026,7 @@ class Actions:
         vapi = VimAPI()
         vapi.api.run_command_mode_command(cmd)
 
-    def vim_command_mode_exterm(cmd: str):
+    def vim_run_command_exterm(cmd: str):
         """run string of commands in command line mode.
 
         - Preserves INSERT
@@ -1042,7 +1037,7 @@ class Actions:
 
     # Sometimes the .talon file won't know what mode to run something in, just
     # that it needs to be a mode that supports motions like normal and visual.
-    def vim_any_motion_mode(cmd: str):
+    def vim_run_any_motion(cmd: str):
         """run a given list of commands in normal mode"""
         v = VimMode()
         v.set_any_motion_mode()
@@ -1050,29 +1045,23 @@ class Actions:
 
     # Sometimes the .talon file won't know what mode to run something in, just
     # that it needs to be a mode that supports motions like normal and visual.
-    def vim_any_motion_mode_exterm(cmd: str):
+    def vim_run_any_motion_exterm(cmd: str):
         """run a given list of commands in some motion mode"""
         v = VimMode()
         v.set_any_motion_mode_exterm()
         actions.insert(cmd)
 
-    def vim_any_motion_mode_key(cmd: str):
+    def vim_run_any_motion_key(cmd: str):
         """run a given list of commands in normal mode"""
         v = VimMode()
         v.set_any_motion_mode()
         actions.key(cmd)
 
-    def vim_any_motion_mode_exterm_key(cmd: str):
+    def vim_run_any_motion_exterm_key(cmd: str):
         """run a given list of commands in normal mode"""
         v = VimMode()
         v.set_any_motion_mode_exterm()
         actions.key(cmd)
-
-    def get_mode():
-        """set visual mode"""
-        v = VimMode()
-        mode = v.mode()
-        print(f"get_mode(): mode={mode}")
 
 
 class NeoVimRPC:
@@ -1137,14 +1126,12 @@ class VimDirectInput:
 
     def run_command_mode_command(self, cmd):
         """Run a command in commandline mode using direct keyboard input."""
-        v = VimMode()
-        v.set_command_mode()
+        v = actions.user.vim_set_command()
         v.insert_command_mode_command(cmd)
 
     def run_command_mode_command_exterm(self, cmd):
         """Run a command in commandline mode using direct keyboard input."""
-        v = VimMode()
-        v.set_command_mode()
+        v = actions.user.vim_set_command()
         v.insert_command_mode_command(cmd)
 
     def run_normal_mode_command(self, cmd):
@@ -1157,10 +1144,10 @@ class VimRPC:
     def __init__(self, nvrpc):
         self.nvrpc = nvrpc
 
+    # TODO: get rid of this wrapper function?
     def exit_terminal_mode(self):
         """Leave terminal mode if inside."""
-        v = VimMode()
-        v.set_normal_mode_exterm()
+        actions.user.vim_set_normal_exterm()
 
     def is_insert_mode(self):
         v = VimMode()
@@ -1390,15 +1377,15 @@ class VimMode:
 
     def mode_to_tag(mode):
         if mode == VimMode.NORMAL:
-            return "user.vim_normal_mode"
+            return "user.vim_mode_normal"
         elif mode == VimMode.VISUAL:
-            return "user.vim_visual_mode"
+            return "user.vim_mode_visual"
         elif mode == VimMode.INSERT:
-            return "user.vim_insert_mode"
+            return "user.vim_mode_insert"
         elif mode == VimMode.TERMINAL:
-            return "user.vim_terminal_mode"
+            return "user.vim_mode_terminal"
         elif mode == VimMode.COMMAND_LINE:
-            return "user.vim_command_mode"
+            return "user.vim_mode_command"
 
     def insert_text(self, text):
         actions.user.paste(text)

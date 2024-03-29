@@ -8,7 +8,7 @@ mod = Module()
 
 ctx = Context()
 ctx.matches = r"""
-tag: user.vim_terminal_mode
+tag: user.vim_mode_terminal
 """
 
 
@@ -21,7 +21,7 @@ class EditActions:
     # everything on the command-line itself, although then we might be able to
     # just use things like select line/graph, etc
     def select_all():
-        actions.user.vim_normal_mode_exterm("ggVG")
+        actions.user.vim_run_normal_exterm("ggVG")
 
     def select_line(n: int = None):
         if n is not None:
@@ -29,25 +29,23 @@ class EditActions:
                 "vim_terminal_mode.py: select_line() with argument not implemented"
             )
             return
-        actions.user.vim_normal_mode_exterm("V")
+        actions.user.vim_run_normal_exterm("V")
         time.sleep(1)
 
     # def paste():
     #     actions.key("ctrl-shift-v")
     # https://stackoverflow.com/questions/54734173/how-to-copy-and-paste-in-vims-terminal-mode
     def paste():
-        actions.user.vim_normal_mode_exterm()
+        actions.user.vim_run_normal_exterm()
         # actions.key("ctrl-v")
         actions.next()
-        actions.user.vim_set_insert_mode()
-
-
+        actions.user.vim_set_insert()
 
 
 # @mod.action_class
 # class Actions:
 #     # FIXME: This needs to import VimMode() from vim.py I guess?
-#     def vim_set_normal_mode():
+#     def vim_set_normal():
 #         """set normal mode"""
 #         v = VimMode()
 #         v.set_normal_mode(auto=False)

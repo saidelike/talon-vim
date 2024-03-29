@@ -10,12 +10,12 @@ from talon import Context, actions
 # win.title: /VIM MODE:nt/
 # """
 # TODO: "nt" is supposed to enable terminal mode only
-# ctx_title.tags = ["user.vim_normal_mode", "user.vim_terminal_mode"]
+# ctx_title.tags = ["user.vim_mode_normal", "user.vim_mode_terminal"]
 
 # ctx = Context()
 # ctx.matches = r"""
-# tag: user.vim_normal_mode
-# and tag: user.vim_terminal_mode
+# tag: user.vim_mode_normal
+# and tag: user.vim_mode_terminal
 # """
 
 
@@ -23,7 +23,7 @@ from talon import Context, actions
 # class UserActions:
 #     def draft_app_submit(text: str):
 #         # Re-enter terminal mode
-#         actions.user.vim_set_terminal_mode()
+#         actions.user.vim_set_terminal()
 #         actions.sleep("100ms")
 #         # actions.insert("i")
 #         actions.sleep("100ms")

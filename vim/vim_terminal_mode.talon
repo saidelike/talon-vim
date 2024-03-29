@@ -1,4 +1,4 @@
-tag: user.vim_terminal_mode
+tag: user.vim_mode_terminal
 -
 
 normal [mode]:
@@ -29,7 +29,7 @@ exit (terminal | term):
 # element we want...
 # copy funk name row <number_small>:
 yank words <number_small> funk:
-    user.vim_normal_mode_exterm()
+    user.vim_run_normal_exterm()
     user.move_up(number_small)
     user.move_to_column_zero()
     # see :h f
@@ -38,7 +38,7 @@ yank words <number_small> funk:
     # see :h B
     # yank WORD(=paint) backward
     insert("yB")
-    user.vim_set_insert_mode()
+    user.vim_set_insert()
 
 # copy a function name on the specified line
 # XXX - it would be nice to have this you something like treesitter on a single
@@ -46,14 +46,14 @@ yank words <number_small> funk:
 # element we want...
 # bring funk name row <number_small>:
 bring <number_small> funk:
-    user.vim_normal_mode_exterm()
+    user.vim_run_normal_exterm()
     user.move_up(number_small)
     user.move_to_column_zero()
     insert("f(")
     insert("yB")
 
     user.paste_after_cursor()
-    user.vim_set_insert_mode()
+    user.vim_set_insert()
     # edit.paste()
     # disable weird highlight
     key(down:5)
@@ -61,9 +61,9 @@ bring <number_small> funk:
 # TODO: continue from here
 
 yank line command:
-    user.vim_normal_mode_exterm("0f y$")
-    user.vim_command_mode(":let @+=substitute(strtrans(@+), '\\_s\\{{2,}}', '', 'g')\n")
-    user.vim_set_insert_mode()
+    user.vim_run_normal_exterm("0f y$")
+    user.vim_run_command(":let @+=substitute(strtrans(@+), '\\_s\\{{2,}}', '', 'g')\n")
+    user.vim_set_insert()
 
     # this is used for pexpect interactive environments
     # https://pexpect.readthedocs.io/en/stable/api/pexpect.html#spawn-class
@@ -79,19 +79,19 @@ python escape:
 # number, and it will jump to that point, copy the line and then jump you in
 pivot line <number_small>:
     insert("cd ")
-    user.vim_normal_mode_exterm()
+    user.vim_run_normal_exterm()
     user.move_up(number_small)
     user.move_to_column_zero()
     user.yank_to_end_of_line()
-    user.vim_command_mode(":let @+=substitute(strtrans(@+), '\\_s\\{{2,}}', '', 'g')\n")
+    user.vim_run_command(":let @+=substitute(strtrans(@+), '\\_s\\{{2,}}', '', 'g')\n")
     user.paste_after_cursor()
-    user.vim_set_insert_mode()
+    user.vim_set_insert()
     # edit.paste()
     key(enter)
 
 pivot river <number_small>:
     insert("cd ")
-    user.vim_normal_mode_exterm()
+    user.vim_run_normal_exterm()
     user.move_up(number_small)
     user.move_to_column_zero()
     key(ctrl-w)
@@ -99,37 +99,37 @@ pivot river <number_small>:
 
 pivot pillar <number_small>:
     insert("cd ")
-    user.vim_normal_mode_exterm()
+    user.vim_run_normal_exterm()
     user.move_up(number_small)
     user.move_to_column_zero()
-    user.vim_command_mode(":vertical wincmd f\n")
+    user.vim_run_command(":vertical wincmd f\n")
 
 edit line <number_small>:
-    user.vim_normal_mode_exterm()
+    user.vim_run_normal_exterm()
     user.move_up(number_small)
     user.move_to_column_zero()
     insert("gf")
 
 river line <number_small>:
-    user.vim_normal_mode_exterm()
+    user.vim_run_normal_exterm()
     user.move_up(number_small)
     user.move_to_column_zero()
     key('ctrl-w')
     key('f')
 
 pillar line <number_small>:
-    user.vim_normal_mode_exterm()
+    user.vim_run_normal_exterm()
     user.move_up(number_small)
     user.move_to_column_zero()
-    user.vim_command_mode(":vertical wincmd f\n")
+    user.vim_run_command(":vertical wincmd f\n")
 
 # Combine the pwd with the path at a relative offset and place the result in
 # the clipboard
 folder yank merge <number_small>:
-    user.vim_command_mode_exterm(":let @+ = getcwd() . '/'\n")
-    user.vim_normal_mode("{number_small}k0")
-    user.vim_command_mode(":let @+ .= substitute(strtrans(getline('.')), '\\_s\\{{2,}}', '', 'g')\n")
-    user.vim_set_insert_mode()
+    user.vim_run_command_exterm(":let @+ = getcwd() . '/'\n")
+    user.vim_run_normal("{number_small}k0")
+    user.vim_run_command(":let @+ .= substitute(strtrans(getline('.')), '\\_s\\{{2,}}', '', 'g')\n")
+    user.vim_set_insert()
 
 # TODO: seems not useful to port here? or move to different file?
 
@@ -141,9 +141,9 @@ folder yank merge <number_small>:
 # TODO: what cursorless command could we use?
 process kill line <number_small>:
     insert("kill -9 ")
-    user.vim_normal_mode_exterm()
+    user.vim_run_normal_exterm()
     user.move_up(number_small)
     key('0 w y e')
     user.paste_after_cursor()
-    user.vim_set_insert_mode()
+    user.vim_set_insert()
     key(right)

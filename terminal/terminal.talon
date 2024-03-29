@@ -1,5 +1,5 @@
-tag: user.vim_terminal_mode
-tag: user.vim_normal_mode
+tag: user.vim_mode_terminal
+tag: user.vim_mode_normal
 and win.title: /VIM MODE:nt/
 -
 

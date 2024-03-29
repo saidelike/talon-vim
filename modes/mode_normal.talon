@@ -8,4 +8,4 @@ win.title: /VIM MODE:niR/
 win.title: /VIM MODE:niV/
 win.title: /VIM MODE:nt/
 -
-tag(): user.vim_normal_mode
+tag(): user.vim_mode_normal
