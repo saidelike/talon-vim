@@ -1,6 +1,7 @@
 from talon import Context, Module, actions, app, settings, ui
 
-from ...vim.vim import VimMode
+from ..rpc.api import VimAPI
+from ..rpc.modes import VimMode
 
 mod = Module()
 
@@ -21,14 +22,13 @@ class Actions:
 
     def vim_run_normal(cmd: str):
         """run a given list of commands in normal mode, preserve INSERT"""
-        v = VimMode()
         # XXX - This needs to be abstracted for the case where we don't have
         # RPC
         # This is required despite using the nvim.command() method because we
         # can access that mode from terminal mode:
         #  https://github.com/neovim/neovim/issues/4895#issuecomment-303073838
-        if v.is_terminal_mode():
-            v.set_normal_mode_exterm()
+        if actions.user.vim_is_terminal():
+            actions.user.vim_set_normal_exterm()
         vapi = VimAPI()
         vapi.api.run_normal_mode_command(cmd)
 

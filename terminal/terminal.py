@@ -2,7 +2,7 @@ from enum import Enum
 
 from talon import Context, Module, actions
 
-from ..vim.vim import VimError
+from ..core.error import VimError
 
 mod = Module()
 ctx_normal_terminal = Context()

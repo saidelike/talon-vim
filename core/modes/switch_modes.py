@@ -1,5 +1,6 @@
 from talon import Module
-from ...vim.vim import VimMode
+
+from ..rpc.modes import VimMode
 
 mod = Module()
 
