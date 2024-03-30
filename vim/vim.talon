@@ -341,6 +341,7 @@ new (empty | unnamed) [horizontal] split:
 new (empty | unnamed) (vertical | v) split:
     user.vim_run_command_exterm(":vnew\n")
 
+# TODO: move to core/ for neovim-talon?
 # navigating splits
 # XXX - we could leverage split.talon stuff here?
 (split | cross) <user.vim_arrow>:

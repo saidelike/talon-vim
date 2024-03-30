@@ -1,7 +1,6 @@
-# XXX - rename this file. vim.talon name should change to match, or vim.py
-# should become something like vim_global.py
 from talon import Context, actions
 
+# TODO: should we also match tag: user.tabs or tabs are always present anyway so does not matter?
 ctx = Context()
 ctx.matches = r"""
 app: vim
