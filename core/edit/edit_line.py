@@ -1,5 +1,13 @@
 from talon import Context, actions
 
+# Context valid in some sort of motion mode, so not including terminal or command mode
+ctx_motion = Context()
+ctx_motion.matches = r"""
+app:vim
+not tag: user.vim_mode_terminal
+and not tag: user.vim_mode_command
+"""
+
 ctx_command = Context()
 ctx_command.matches = r"""
 tag: user.vim_mode_command
@@ -10,6 +18,39 @@ ctx_insert = Context()
 ctx_insert.matches = r"""
 tag: user.vim_mode_insert
 """
+
+
+@ctx_motion.action_class("edit")
+class EditActions:
+    def line_start():
+        actions.user.vim_run_any_motion_key("^")
+
+    def line_end():
+        actions.user.vim_run_any_motion_key("$")
+
+    def select_line(n: int = None):
+        actions.user.vim_run_visual("V")
+
+    def extend_line_up():
+        actions.user.vim_run_visual("k^")
+
+    def extend_line_down():
+        actions.user.vim_run_visual("j^")
+
+    def extend_line_start():
+        actions.user.vim_run_visual("^")
+
+    def extend_line_end():
+        actions.user.vim_run_visual("$")
+
+
+@ctx_motion.action_class("user")
+class UserActions:
+    def delete_line_start():
+        actions.user.vim_run_normal("d0")
+
+    def delete_line_end():
+        actions.user.vim_run_normal("d$")
 
 
 @ctx_command.action_class("edit")
