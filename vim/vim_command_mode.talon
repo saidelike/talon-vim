@@ -1,4 +1,4 @@
-# These commands had only make sense to be exposed of vim is currently in
+# These commands had only make sense to be exposed of vim if currently in
 # command mode
 # # TODO: It would make a lot more sense if this also disabled the bunch of other
 # functionality that we would never want to run from inside command mode ...
@@ -7,8 +7,6 @@ tag: user.vim_mode_command
 -
 # We assume that the user may want to use lua in the commandline, so we include some
 tag(): user.lua_nvim
-# this is needed on Windows to be able to use "word hello" in command mode
-tag(): user.insert_paste_disabled
 
 paste register <user.key>:
     key(ctrl-r {key})
