@@ -5,6 +5,8 @@ from ..error import VimError
 
 import time
 
+# TODO: move this file to core/modes/modes.py instead as is not rpc stuff but just relies on it?
+
 
 # XXX - this should be updated to use feedkeys when RPC is available
 # XXX - this should be made a singleton they gets registered when the window
@@ -15,6 +17,7 @@ class VimMode:
     """Manage mode transitions with or without RPC"""
 
     # mode ids represent generic statusline mode() values. see :help mode()
+    # TODO: need to add "normal_terminal" too?
     NORMAL = "normal"
     VISUAL = "visual"
     VISUAL_LINE = "visual_line"
@@ -59,7 +62,6 @@ class VimMode:
         "niI",
         "niR",
         "niV",
-        "nt",
     ]
 
     def __init__(self):
@@ -85,7 +87,7 @@ class VimMode:
     def is_normal_mode(self):
         return self.mode() in self.vim_normal_mode_indicators
 
-    # XXX - move these too arrays like vim_normal_mode_indicators
+    # XXX - move these to arrays like vim_normal_mode_indicators
     def is_visual_mode(self):
         return self.mode() in ["v", "V", "^V"]
 
@@ -171,12 +173,10 @@ class VimMode:
         return self.adjust_mode(self.NORMAL, auto=auto)
 
     def set_normal_mode_exterm(self):
-        print(f"set_normal_mode_exterm()")
         return self.adjust_mode(self.NORMAL, escape_terminal=True)
 
     # XXX - revisit auto, maybe have separate method version or something
     def set_normal_mode_np(self, auto=True):
-        print(f"set_normal_mode_np()")
         return self.adjust_mode(self.NORMAL, no_preserve=True, auto=auto)
 
     def set_visual_mode(self):
@@ -195,7 +195,6 @@ class VimMode:
         return self.adjust_mode(self.INSERT)
 
     def set_terminal_mode(self):
-        print("set_terminal_mode()")
         return self.adjust_mode(self.TERMINAL)
 
     def set_command_mode(self):
