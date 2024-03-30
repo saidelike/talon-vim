@@ -9,6 +9,11 @@ app:vim
 and not tag: user.vim_mode_command
 """
 
+ctx_command = Context()
+ctx_command.matches = r"""
+tag: user.vim_mode_command
+"""
+
 
 # Since this file includes anything that could by running in terminal mode or
 # other modes, they should use the exterm version of the API in almost all
@@ -53,3 +58,10 @@ class EditActions:
 
     def zoom_in():
         actions.key("ctrl-shift-+")
+
+
+@ctx_command.action_class("edit")
+class EditActions:
+    # ----- Cut, Copy, Paste -----
+    def paste():
+        actions.key("ctrl-shift-v")
