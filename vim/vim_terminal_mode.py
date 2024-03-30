@@ -40,12 +40,3 @@ class EditActions:
         # actions.key("ctrl-v")
         actions.next()
         actions.user.vim_set_insert()
-
-
-# @mod.action_class
-# class Actions:
-#     # FIXME: This needs to import VimMode() from vim.py I guess?
-#     def vim_set_normal():
-#         """set normal mode"""
-#         v = VimMode()
-#         v.set_normal_mode(auto=False)

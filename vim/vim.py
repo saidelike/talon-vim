@@ -639,8 +639,7 @@ def vim_motions_all(m) -> str:
 )
 def vim_motions_all_adjust(m) -> str:
     "Returns a rule matching a vim motion, and adjusts the vim mode"
-    v = VimMode()
-    v.set_any_motion_mode()
+    actions.user.vim_set_any_motion_mode()
     # print(m)
     return "".join(list(m))
 
@@ -711,8 +710,7 @@ def vim_unranged_surround_text_objects(m) -> str:
 @mod.capture(rule="{self.vim_motion_commands}")
 def vim_motion_commands(m) -> str:
     "Returns a string representing a motion command"
-    v = VimMode()
-    if v.is_visual_mode():
+    if actions.user.vim_is_visual():
         if str(m) in visual_commands:
             return visual_commands[str(m)]
     # Note this throws away commands that matched visual mode only stuff,
@@ -722,7 +720,7 @@ def vim_motion_commands(m) -> str:
         print(f"no match for {str(m)}")
         return ""
 
-    v.set_normal_mode()
+    actions.user.vim_set_normal(auto=True)
     return commands_with_motion[str(m)]
 
 

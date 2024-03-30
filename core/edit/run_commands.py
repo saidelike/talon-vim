@@ -35,8 +35,7 @@ class Actions:
     def vim_run_normal_np(cmd: str):
         """run a given list of commands in normal mode, don't preserve
         INSERT"""
-        v = VimMode()
-        v.set_normal_mode_np()
+        actions.user.vim_set_normal_np(auto=True)
         actions.insert(cmd)
 
     def vim_run_normal_exterm(cmd: str = None):
@@ -52,8 +51,7 @@ class Actions:
 
     def vim_run_normal_key(cmd: str):
         """press a given key in normal mode"""
-        v = VimMode()
-        v.set_normal_mode()
+        actions.user.vim_set_normal(auto=False)
         actions.key(cmd)
 
     def vim_run_normal_exterm_key(cmd: str):
@@ -63,8 +61,7 @@ class Actions:
 
     def vim_run_normal_keys(keys: str):
         """press a given list of keys in normal mode"""
-        v = VimMode()
-        v.set_normal_mode()
+        actions.user.vim_set_normal(auto=False)
         for key in keys.split(" "):
             # print(key)
             actions.key(key)
@@ -104,26 +101,22 @@ class Actions:
     # that it needs to be a mode that supports motions like normal and visual.
     def vim_run_any_motion(cmd: str):
         """run a given list of commands in normal mode"""
-        v = VimMode()
-        v.set_any_motion_mode()
+        actions.user.vim_set_any_motion_mode()
         actions.insert(cmd)
 
     # Sometimes the .talon file won't know what mode to run something in, just
     # that it needs to be a mode that supports motions like normal and visual.
     def vim_run_any_motion_exterm(cmd: str):
         """run a given list of commands in some motion mode"""
-        v = VimMode()
-        v.set_any_motion_mode_exterm()
+        actions.user.vim_set_any_motion_mode_exterm()
         actions.insert(cmd)
 
     def vim_run_any_motion_key(cmd: str):
         """run a given list of commands in normal mode"""
-        v = VimMode()
-        v.set_any_motion_mode()
+        actions.user.vim_set_any_motion_mode()
         actions.key(cmd)
 
     def vim_run_any_motion_exterm_key(cmd: str):
         """run a given list of commands in normal mode"""
-        v = VimMode()
-        v.set_any_motion_mode_exterm()
+        actions.user.vim_set_any_motion_mode_exterm()
         actions.key(cmd)

@@ -667,7 +667,7 @@ man page this:
 # Mode Switching
 ###
 [mode] normal:
-    user.vim_set_normal_np()
+    user.vim_set_normal_np(false)
 [mode] insert:
     user.vim_set_insert()
 (mode terminal | go term):

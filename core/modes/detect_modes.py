@@ -12,3 +12,8 @@ class Actions:
         """check if currently in terminal mode"""
         v = VimMode()
         return v.is_terminal_mode()
+
+    def vim_is_visual():
+        """check if currently in visual mode"""
+        v = VimMode()
+        return v.is_visual_mode()
