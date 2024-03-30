@@ -7,7 +7,7 @@ from talon import Context, actions
 # TODO: commenting for now since we are only enabling terminal mode when nt is enabled: this needs to be changed now
 # ctx_title = Context()
 # ctx_title.matches = r"""
-# win.title: /VIM MODE:nt/
+# tag: vim_mode_normal_terminal
 # """
 # TODO: "nt" is supposed to enable terminal mode only
 # ctx_title.tags = ["user.vim_mode_normal", "user.vim_mode_terminal"]

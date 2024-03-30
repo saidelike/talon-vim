@@ -9,8 +9,7 @@ ctx_normal_terminal = Context()
 
 
 ctx_normal_terminal.matches = r"""
-tag: user.vim_mode_normal
-and win.title: /VIM MODE:nt/
+tag: user.vim_mode_normal_terminal
 """
 
 

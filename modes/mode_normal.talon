@@ -6,6 +6,5 @@ win.title: /VIM MODE:no^V/
 win.title: /VIM MODE:niI/
 win.title: /VIM MODE:niR/
 win.title: /VIM MODE:niV/
-win.title: /VIM MODE:nt/
 -
 tag(): user.vim_mode_normal

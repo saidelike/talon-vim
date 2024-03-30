@@ -1,6 +1,5 @@
 tag: user.vim_mode_terminal
-tag: user.vim_mode_normal
-and win.title: /VIM MODE:nt/
+tag: user.vim_mode_normal_terminal
 -
 
 # this conflicts with cursorless-neovim so disabling it for now
