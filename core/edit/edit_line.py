@@ -6,6 +6,12 @@ tag: user.vim_mode_command
 """
 
 
+ctx_insert = Context()
+ctx_insert.matches = r"""
+tag: user.vim_mode_insert
+"""
+
+
 @ctx_command.action_class("edit")
 class EditActions:
     def line_start():
@@ -16,3 +22,9 @@ class EditActions:
 
     def delete_line():
         actions.key("ctrl-u")
+
+
+@ctx_insert.action_class("edit")
+class EditActions:
+    def delete_line():
+        actions.user.vim_run_normal("dd")
