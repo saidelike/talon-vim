@@ -1,4 +1,6 @@
-from talon import Context, actions
+from talon import Context, actions, app
+
+import time
 
 # Context valid in some sort of motion mode, so not including terminal or command mode
 ctx_motion = Context()
@@ -22,6 +24,11 @@ tag: user.vim_mode_insert
 ctx_command = Context()
 ctx_command.matches = r"""
 tag: user.vim_mode_command
+"""
+
+ctx_terminal = Context()
+ctx_terminal.matches = r"""
+tag: user.vim_mode_terminal
 """
 
 
@@ -89,3 +96,13 @@ class EditActions:
 
     def delete_line():
         actions.key("ctrl-u")
+
+
+@ctx_terminal.action_class("edit")
+class EditActions:
+    def select_line(n: int = None):
+        if n is not None:
+            app.notify("select_line() with argument not implemented")
+            return
+        actions.user.vim_run_normal_exterm("V")
+        time.sleep(1)

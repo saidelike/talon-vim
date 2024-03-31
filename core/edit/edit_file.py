@@ -8,6 +8,11 @@ not tag: user.vim_mode_terminal
 and not tag: user.vim_mode_command
 """
 
+ctx_terminal = Context()
+ctx_terminal.matches = r"""
+tag: user.vim_mode_terminal
+"""
+
 
 @ctx_motion.action_class("edit")
 class EditActions:
@@ -26,3 +31,12 @@ class EditActions:
 
     def extend_file_end():
         actions.user.vim_run_visual("G")
+
+
+@ctx_terminal.action_class("edit")
+class EditActions:
+    # XXX - this might be a bit much if eventually we want this to mean to let
+    # everything on the command-line itself, although then we might be able to
+    # just use things like select line/graph, etc
+    def select_all():
+        actions.user.vim_run_normal_exterm("ggVG")

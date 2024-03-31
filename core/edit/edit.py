@@ -28,6 +28,11 @@ ctx_command.matches = r"""
 tag: user.vim_mode_command
 """
 
+ctx_terminal = Context()
+ctx_terminal.matches = r"""
+tag: user.vim_mode_terminal
+"""
+
 
 # Since this file includes anything that could by running in terminal mode or
 # other modes, they should use the exterm version of the API in almost all
@@ -138,6 +143,17 @@ class EditActions:
 
 @ctx_command.action_class("edit")
 class EditActions:
+    # ----- Cut, Copy, Paste -----
+    def paste():
+        actions.key("ctrl-shift-v")
+
+
+@ctx_terminal.action_class("edit")
+class EditActions:
+    # ----- Navigation -----
+    def page_up():
+        actions.key("ctrl-\\ ctrl-n ctrl-b")
+
     # ----- Cut, Copy, Paste -----
     def paste():
         actions.key("ctrl-shift-v")
