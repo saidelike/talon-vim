@@ -1,10 +1,18 @@
 from talon import Context, actions
 
+# TODO: can we merge ctx, ctx_normal and ctx_motion into one context?
+# otherwise, how does talon prioritize which to use in case of conflicts?
+
 # Context valid for most modes
 ctx = Context()
 ctx.matches = r"""
 app:vim
 and not tag: user.vim_mode_command
+"""
+
+ctx_normal = Context()
+ctx_normal.matches = r"""
+tag: user.vim_mode_normal
 """
 
 # Context valid in some sort of motion mode, so not including terminal or command mode
@@ -64,6 +72,16 @@ class EditActions:
 
     def zoom_in():
         actions.key("ctrl-shift-+")
+
+
+@ctx_normal.action_class("edit")
+class EditActions:
+    # ----- Indent -----
+    def indent_more():
+        actions.insert(">>")
+
+    def indent_less():
+        actions.insert("<<")
 
 
 @ctx_motion.action_class("edit")

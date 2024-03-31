@@ -8,6 +8,11 @@ not tag: user.vim_mode_terminal
 and not tag: user.vim_mode_command
 """
 
+ctx_normal = Context()
+ctx_normal.matches = r"""
+tag: user.vim_mode_normal
+"""
+
 ctx_command = Context()
 ctx_command.matches = r"""
 tag: user.vim_mode_command
@@ -51,6 +56,21 @@ class UserActions:
 
     def delete_line_end():
         actions.user.vim_run_normal("d$")
+
+
+@ctx_normal.action_class("edit")
+class EditActions:
+    # These differ slightly if we're in normal mode versus visual mode. in normal
+    # mode we select up we want to select the current line in the one above, as
+    # otherwise there is no current selection
+    def extend_line_up():
+        actions.insert("Vk")
+
+    def extend_line_down():
+        actions.insert("Vj")
+
+    def delete_line():
+        actions.insert("dd")
 
 
 @ctx_command.action_class("edit")
