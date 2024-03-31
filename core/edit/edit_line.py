@@ -32,6 +32,12 @@ tag: user.vim_mode_terminal
 """
 
 
+ctx_visual = Context()
+ctx_visual.matches = r"""
+tag: user.vim_mode_visual
+"""
+
+
 @ctx_motion.action_class("edit")
 class EditActions:
     def line_start():
@@ -106,3 +112,24 @@ class EditActions:
             return
         actions.user.vim_run_normal_exterm("V")
         time.sleep(1)
+
+
+@ctx_visual.action_class("edit")
+class EditActions:
+    # when we're extending a selection in the opposite direction (backwards) we
+    # need to a prefix an  beforehand so that it actually extends, rather than
+    # changing directions.
+    def extend_line_up():
+        actions.insert("ok^o")
+
+    def extend_line_down():
+        actions.insert("j^")
+
+    def extend_line_start():
+        actions.insert("o^o")
+
+    def extend_line_end():
+        actions.insert("$")
+
+    def delete_line():
+        actions.insert("D")

@@ -1,4 +1,4 @@
-from talon import Context, actions
+from talon import Context, actions, clip
 
 # TODO: can we merge ctx, ctx_normal and ctx_motion into one context?
 # otherwise, how does talon prioritize which to use in case of conflicts?
@@ -31,6 +31,12 @@ tag: user.vim_mode_command
 ctx_terminal = Context()
 ctx_terminal.matches = r"""
 tag: user.vim_mode_terminal
+"""
+
+
+ctx_visual = Context()
+ctx_visual.matches = r"""
+tag: user.vim_mode_visual
 """
 
 
@@ -157,3 +163,26 @@ class EditActions:
     # ----- Cut, Copy, Paste -----
     def paste():
         actions.key("ctrl-shift-v")
+
+
+@ctx_visual.action_class("edit")
+class EditActions:
+    # ----- Selection -----
+    def extend_left():
+        actions.insert("oho")
+
+    def extend_right():
+        actions.insert("l")
+
+    # ----- Indent -----
+    def indent_less():
+        actions.insert("<")
+
+    def indent_more():
+        actions.insert(">")
+
+    # ----- Miscellaneous -----
+    def selected_text() -> str:
+        # gv to reselect
+        actions.insert("ygv")
+        return clip.get()

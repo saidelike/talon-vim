@@ -13,6 +13,11 @@ ctx_terminal.matches = r"""
 tag: user.vim_mode_terminal
 """
 
+ctx_visual = Context()
+ctx_visual.matches = r"""
+tag: user.vim_mode_visual
+"""
+
 
 @ctx_motion.action_class("edit")
 class EditActions:
@@ -40,3 +45,16 @@ class EditActions:
     # just use things like select line/graph, etc
     def select_all():
         actions.user.vim_run_normal_exterm("ggVG")
+
+
+@ctx_visual.action_class("edit")
+class EditActions:
+    def extend_file_start():
+        actions.insert("ogg0o")
+
+    def extend_file_end():
+        actions.insert("G")
+        # XXX - This should be a callable function so we can do things like:
+        #       '.swap on this <highlight motion>'
+        #       'swap between line x, y'
+        # assumes visual mode

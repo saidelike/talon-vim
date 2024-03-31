@@ -13,6 +13,11 @@ ctx_command.matches = r"""
 tag: user.vim_mode_command
 """
 
+ctx_visual = Context()
+ctx_visual.matches = r"""
+tag: user.vim_mode_visual
+"""
+
 
 @ctx_motion.action_class("edit")
 class EditActions:
@@ -57,3 +62,15 @@ class EditActions:
 class UserActions:
     def delete_word_left():
         actions.key("ctrl-w")
+
+
+@ctx_visual.action_class("edit")
+class EditActions:
+    def select_word():
+        actions.insert("e")
+
+    def extend_word_left():
+        actions.insert("obo")
+
+    def extend_word_right():
+        actions.insert("e")
