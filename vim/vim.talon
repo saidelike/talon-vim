@@ -36,7 +36,6 @@ and not tag: user.vim_mode_command
 -
 
 tag(): user.vim
-tag(): user.tabs
 # this is needed on Windows to be able to enter commands with ":..." in normal mode
 tag(): user.insert_paste_disabled
 # TODO - add line_commands, etc
@@ -66,7 +65,6 @@ tag(): user.vim_tabular
 # tag(): user.vim_unicode
 # tag(): user.vim_wiki
 # tag(): user.vim_you_are_here
-# tag(): user.vim_zoom
 # tag(): user.vim_zenmode
 # tag(): user.vim_codeql
 # tag(): user.vim_mason
@@ -248,12 +246,7 @@ close (bufs | buffers):
     user.vim_run_command_exterm(":bd ")
 (buf | buffer) open <number>:
     user.vim_run_command_exterm(":b {number}\n")
-# creates a split and then moves the split to a tab. required for when the
-# current tab has only one split
-(buf | buffer) (move to | make) tab:
-    user.vim_run_normal_exterm(":split\n")
-    key(ctrl-w)
-    key(T)
+
 (buf | buffer) rename:
     user.vim_run_command_exterm(":file ")
 (buf | buffer) rename <user.text>:
@@ -344,12 +337,7 @@ new (empty | unnamed) (vertical | v) split:
 # TODO: move to core/ for neovim-talon?
 # navigating splits
 # XXX - we could leverage split.talon stuff here?
-(split | cross) <user.vim_arrow>:
-    user.vim_run_normal("\\<c-w>{vim_arrow}")
-    #user.vim_set_normal_exterm()
-    #key(ctrl-w)
-    #key("{vim_arrow}")
-(split flip | spitter):
+spitter:
     user.vim_set_normal_exterm()
     key(ctrl-w)
     key(p)
@@ -357,14 +345,6 @@ split top left:
     user.vim_set_normal_exterm()
     key(ctrl-w)
     key(t)
-(split | cross) [next]:
-    user.vim_set_normal_exterm()
-    key(ctrl-w)
-    key(w)
-(split (previous | prev) | cross last):
-    user.vim_set_normal_exterm()
-    key(ctrl-w)
-    key(W)
 split bottom right:
     user.vim_set_normal_exterm()
     key(ctrl-w)
@@ -373,30 +353,10 @@ split preview:
     user.vim_set_normal_exterm()
     key(ctrl-w)
     key(P)
-split <number_small>:
-    user.vim_set_normal_exterm()
-    insert("{number_small}")
-    key(ctrl-w ctrl-w)
 
 # personal convenience shortcuts
 
-# split right
-sprite:
-    user.vim_set_normal_exterm()
-    key(ctrl-w)
-    key(l)
-
-# split left
-spliff:
-    user.vim_set_normal_exterm()
-    key(ctrl-w)
-    key(h)
-
 # moving windows
-split (only | exclusive):
-    user.vim_set_normal_exterm()
-    key(ctrl-w)
-    key(o)
 split swap:
     user.vim_set_normal_exterm()
     key(ctrl-w)
@@ -425,12 +385,8 @@ split move left:
     user.vim_set_normal_exterm()
     key(ctrl-w)
     key(H)
-split (move to | make) tab:
-    user.vim_set_normal_exterm()
-    key(ctrl-w)
-    key(T)
 
-# window resizing
+# TODO: add to neovim? split window reset size
 (split equalize | balance):
     user.vim_set_normal_exterm()
     key(ctrl-w)
@@ -456,28 +412,6 @@ split (zen mode | center):
 
 # XXX - it would be nice to have percents for these resizes..
 # atm comboing these with ordinals is best, but may add number support
-split taller:
-    user.vim_set_normal_exterm()
-    key(ctrl-w)
-    key(+)
-    # XXX - This should restore the original mode, is sometimes I use this from
-    # terminal mode
-split shorter:
-    user.vim_set_normal_exterm()
-    key(ctrl-w)
-    key(-)
-    # XXX - This should restore the original mode, is sometimes I use this from
-    # terminal mode
-split fatter:
-    user.vim_set_normal_exterm()
-    key(ctrl-w)
-    key(>)
-    # XXX - This should restore the original mode, is sometimes I use this from
-    # terminal mode
-split skinnier:
-    user.vim_set_normal_exterm()
-    key(ctrl-w)
-    key(<)
 set split width:
     user.vim_run_command_exterm(":resize ")
 set split height:
@@ -539,10 +473,6 @@ tabby list:
     user.vim_run_normal_exterm("g\t")
 tabby edit:
     user.vim_run_command_exterm(":tabedit ")
-tabby move right:
-    user.vim_run_command_exterm(":tabm +\n")
-tabby move left:
-    user.vim_run_command_exterm(":tabm -\n")
 edit (buf | buffer) <number_small> [in] new tab:
     user.vim_run_command_exterm(":tabnew #{number_small}\n")
 

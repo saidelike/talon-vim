@@ -41,13 +41,9 @@ class Actions:
     def vim_run_normal_exterm(cmd: str = None):
         """run a given list of commands in normal mode, don't preserve INSERT,
         escape from terminal mode"""
-        print(f"vim_run_normal_exterm()")
         actions.user.vim_set_normal_exterm()
         if cmd is not None:
-            print(f"vim_run_normal_exterm(): cmd={cmd} ")
             actions.insert(cmd)
-        print(f"-------------------")
-        return ret
 
     def vim_run_normal_key(cmd: str):
         """press a given key in normal mode"""

@@ -56,7 +56,6 @@ plugin_tag_list = [
     "vim_you_are_here",
     "vim_youcompleteme",
     "vim_zenmode",
-    "vim_zoom",
     "vim_trouble",
     "vim_luasnip",
     "vim_nvim_cmp",
