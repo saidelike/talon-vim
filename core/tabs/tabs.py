@@ -3,7 +3,7 @@ from talon import Context, actions
 # TODO: should we also match tag: user.tabs or tabs are always present anyway so does not matter?
 ctx = Context()
 ctx.matches = r"""
-app: vim
+app: neovim
 and not tag: user.vim_mode_command
 """
 

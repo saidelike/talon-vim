@@ -1,3 +1,3 @@
-app: vim
+app: neovim
 tag: user.tabs
 -

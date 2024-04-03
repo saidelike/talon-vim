@@ -4,7 +4,7 @@
 # put it in vim.talon, but mostly just ask yourself can you ever imagine being
 # in command mode or inside of a terminal and wanting to run the command? If
 # you can't imagine doing it, it suits this file over vim.talon
-app: vim
+app: neovim
 not tag: user.vim_mode_terminal
 and not tag: user.vim_mode_command
 -

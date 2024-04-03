@@ -1,4 +1,4 @@
-app: vim
+app: neovim
 tag: user.split
 -
 

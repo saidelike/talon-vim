@@ -17,7 +17,7 @@ mod = Module()
 ctx = Context()
 
 ctx.matches = r"""
-app: vim
+app: neovim
 """
 
 

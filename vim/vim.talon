@@ -31,7 +31,7 @@
 #  - With sending the command-line mode commands in the background via RPC we
 #  miss out on the display of some features. Ex: ALEInfo becomes unreadable...
 #  need to figure out how to fix this.
-app: vim
+app: neovim
 and not tag: user.vim_mode_command
 -
 

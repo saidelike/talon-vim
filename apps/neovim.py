@@ -3,9 +3,8 @@ from talon import Context, Module, actions, app, settings, ui
 mod = Module()
 ctx = Context()
 
-# TODO: should we use "app: neovim" instead of "app: vim"?
 # Neovim (commandline version) and nvim-qt.exe (GUI version)
-mod.apps.vim = """
+mod.apps.neovim = """
 os: windows
 and win.title: /Neovim/
 and app.exe: nvim.exe
@@ -27,7 +26,7 @@ and app.exe: nvim-qt.exe
 """
 
 ctx.matches = r"""
-app: vim
+app: neovim
 """
 
 

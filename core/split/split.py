@@ -4,7 +4,7 @@ mod = Module()
 
 ctx = Context()
 ctx.matches = r"""
-app: vim
+app: neovim
 and not tag: user.vim_mode_command
 """
 
