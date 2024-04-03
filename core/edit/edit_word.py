@@ -3,7 +3,7 @@ from talon import Context, actions
 # Context valid in some sort of motion mode, so not including terminal or command mode
 ctx_motion = Context()
 ctx_motion.matches = r"""
-app:vim
+app: neovim
 not tag: user.vim_mode_terminal
 and not tag: user.vim_mode_command
 """
