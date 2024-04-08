@@ -612,10 +612,11 @@ make (ascending | number list | incrementing):
 block take:
     user.vim_run_any_motion_exterm_key("ctrl-v")
 
-take <user.vim_motions>:
-    user.vim_run_visual("{vim_motions}")
-take <user.vim_text_objects>:
-    user.vim_run_visual("{vim_text_objects}")
+# disable because now it conflicts with cursorless: "take round"
+# take <user.vim_motions>:
+#     user.vim_run_visual("{vim_motions}")
+# take <user.vim_text_objects>:
+#     user.vim_run_visual("{vim_text_objects}")
 block take <user.vim_motions>:
     user.vim_visual_block_mode("{vim_motions}")
 
