@@ -35,9 +35,6 @@ app: neovim
 and not tag: user.vim_mode_command
 -
 
-tag(): user.vim
-# this is needed on Windows to be able to enter commands with ":..." in normal mode
-tag(): user.insert_paste_disabled
 # TODO - add line_commands, etc
 
 # Talon VIM plugin tags - see plugins/ for implementations Comment out plugins
@@ -76,7 +73,7 @@ settings():
     # Whether or not to always revert back to the previous mode. Example, if
     # you are in insert mode and say 'delete word' it will delete one word and
     # keep you in insert mode. Same as ctrl-o in VIM.
-    user.vim_preserve_insert_mode = 1
+    # user.vim_preserve_insert_mode = 1
 
     # Whether or not to automatically adjust modes when using commands. Example
     # saying "go line 50" will first switch you out of INSERT into NORMAL and
@@ -87,7 +84,7 @@ settings():
     # Select whether or not talon should dispatch notifications on mode changes
     # that are made. Not yet completed, as notifications are kind of wonky on
     # Linux
-    user.vim_notify_mode_changes = 0
+    # user.vim_notify_mode_changes = 0
 
     # Whether or not all commands that transfer out of insert mode should also
     # automatically escape out of terminal mode. Turning this on is quite
@@ -123,7 +120,7 @@ settings():
     # When you preserve mode and switch into into insert mode it will often
     # move your cursor, which can mess up the commands you're trying to run from
     # insert. This setting controls the cursor move
-    user.vim_mode_switch_moves_cursor = 0
+    # user.vim_mode_switch_moves_cursor = 0
 
     # Whether or not use pynvim rpc if it is available
     user.vim_use_rpc = 1
@@ -601,8 +598,6 @@ man page this:
     user.vim_set_normal_np(false)
 [mode] insert:
     user.vim_set_insert()
-(mode terminal | go term):
-    user.vim_set_terminal()
 # command mode: user.vim_set_command()
 mode command [line]:
     user.vim_run_any_motion_exterm_key(":")

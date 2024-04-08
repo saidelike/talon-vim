@@ -4,12 +4,12 @@ mod = Module()
 
 # TODO: not sure if we want to move any of the below to neovim-talon?
 
-mod.setting(
-    "vim_preserve_insert_mode",
-    type=int,
-    default=1,
-    desc="If normal mode actions are called from insert mode, stay in insert",
-)
+# mod.setting(
+#     "vim_preserve_insert_mode",
+#     type=int,
+#     default=1,
+#     desc="If normal mode actions are called from insert mode, stay in insert",
+# )
 
 mod.setting(
     "vim_adjust_modes",
@@ -18,12 +18,12 @@ mod.setting(
     desc="User wants talon to automatically adjust modes for commands",
 )
 
-mod.setting(
-    "vim_notify_mode_changes",
-    type=int,
-    default=0,
-    desc="Notify user about vim mode changes as they occur",
-)
+# mod.setting(
+#     "vim_notify_mode_changes",
+#     type=int,
+#     default=0,
+#     desc="Notify user about vim mode changes as they occur",
+# )
 
 mod.setting(
     "vim_escape_terminal_mode",
@@ -52,12 +52,12 @@ mod.setting(
     desc="It how long to wait before issuing commands after a mode change",
 )
 
-mod.setting(
-    "vim_mode_switch_moves_cursor",
-    type=int,
-    default=0,
-    desc="Preserving insert mode will automatically move the cursor. Setting this to 0 can override that.",
-)
+# mod.setting(
+#     "vim_mode_switch_moves_cursor",
+#     type=int,
+#     default=0,
+#     desc="Preserving insert mode will automatically move the cursor. Setting this to 0 can override that.",
+# )
 
 mod.setting(
     "vim_use_rpc",

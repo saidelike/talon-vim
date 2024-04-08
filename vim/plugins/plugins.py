@@ -63,6 +63,3 @@ plugin_tag_list = [
 ]
 for entry in plugin_tag_list:
     mod.tag(entry, f"tag to load {entry} vim plugin commands")
-
-# TODO: rename tag to vim_plugins?
-mod.tag("vim", desc="a tag to load various vim plugins")

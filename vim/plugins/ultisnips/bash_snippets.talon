@@ -1,6 +1,6 @@
-tag: user.vim
+app: neovim
 and tag: user.bash
-tag: user.vim
+app: neovim
 and tag: user.zsh
 -
 ###

@@ -7,7 +7,8 @@ from enum import Enum
 
 from talon import Context, Module, actions, app, settings, ui
 
-from ..core.rpc.modes import VimMode
+# commenting for now as is in neovim-talon now but it means use of VimMode will break below
+# from ..core.rpc.modes import VimMode
 
 import pynvim
 

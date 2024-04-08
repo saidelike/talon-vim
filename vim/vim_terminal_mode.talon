@@ -3,8 +3,6 @@ tag: user.vim_mode_terminal
 
 normal [mode]:
     key(ctrl-\ ctrl-n)
-pop (terminal | term):
-    key(ctrl-\ ctrl-n)
 poppy:
     key(ctrl-\ ctrl-n)
 
