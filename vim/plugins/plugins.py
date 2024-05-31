@@ -35,7 +35,6 @@ plugin_tag_list = [
     "vim_mkdx",
     "vim_null_ls",
     "vim_follows_md_links",
-    "vim_lazy",
     "vim_nerdtree",
     "vim_obsession",
     "vim_plug",
