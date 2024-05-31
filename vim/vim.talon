@@ -65,7 +65,6 @@ tag(): user.vim_tabular
 # tag(): user.vim_zenmode
 # tag(): user.vim_codeql
 # tag(): user.vim_mason
-tag(): user.vim_lazy
 
 # To the settings below dictate how certain parts of Talon VIM will work. You
 # can leave them or tweak them to your needs.
