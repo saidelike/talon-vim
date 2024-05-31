@@ -55,7 +55,6 @@ and not tag: user.vim_mode_command
 #tag(): user.vim_plug
 #tag(): user.vim_lightspeed
 # tag(): user.vim_signature
-tag(): user.vim_taboo
 tag(): user.vim_tabular
 #tag(): user.vim_taskwiki
 # tag(): user.vim_test

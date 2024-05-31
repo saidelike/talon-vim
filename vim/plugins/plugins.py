@@ -42,7 +42,6 @@ plugin_tag_list = [
     "vim_signature",
     "vim_suda",
     "vim_surround",
-    "vim_taboo",
     "vim_tabular",
     "vim_taskwiki",
     "vim_telescope",
