@@ -77,7 +77,7 @@ settings():
     # saying "go line 50" will first switch you out of INSERT into NORMAL and
     # then jump to the line. Disabling this setting would put :50\n into your
     # file if you say "row 50" while in INSERT mode.
-    user.vim_adjust_modes = 1
+    # user.vim_adjust_modes = 1
 
     # Select whether or not talon should dispatch notifications on mode changes
     # that are made. Not yet completed, as notifications are kind of wonky on
@@ -87,7 +87,7 @@ settings():
     # Whether or not all commands that transfer out of insert mode should also
     # automatically escape out of terminal mode. Turning this on is quite
     # troublesome.
-    user.vim_escape_terminal_mode = 0
+    # user.vim_escape_terminal_mode = 0
 
     # When issuing counted actions in vim you can prefix a count that will
     # dictate how many times the command is run, however some peoples talon
@@ -102,18 +102,18 @@ settings():
     #
     # This setting only applies to commands run through the actual counted
     # actions grammar itself
-    user.vim_cancel_queued_commands = 1
+    # user.vim_cancel_queued_commands = 1
 
     # When you are escaping queued commands, it seems vim needs time to recover
     # before issuing the subsequent commands. This controls how long it waits,
     # in seconds
-    user.vim_cancel_queued_commands_timeout = 0.20
+    # user.vim_cancel_queued_commands_timeout = 0.20
 
     # It how long to wait before issuing commands after a mode change. You
     # want adjust this if when you say things like undo from INSERT mode, an
     # "u" gets inserted into INSERT mode. It in theory that shouldn't be
     # required if using pynvim.
-    user.vim_mode_change_timeout = 0.25
+    # user.vim_mode_change_timeout = 0.25
 
     # When you preserve mode and switch into into insert mode it will often
     # move your cursor, which can mess up the commands you're trying to run from
@@ -121,10 +121,10 @@ settings():
     # user.vim_mode_switch_moves_cursor = 0
 
     # Whether or not use pynvim rpc if it is available
-    user.vim_use_rpc = 1
+    # user.vim_use_rpc = 1
 
     # Adds debug output to the talon log
-    user.vim_debug = 1
+    # user.vim_debug = 1
 
 ###
 # File editing and management
@@ -410,7 +410,7 @@ split (zen mode | center):
 set split width:
     user.vim_run_command_exterm(":resize ")
 set split height:
-    user.vim_set_command_extern(":vertical resize ")
+    user.vim_set_command_exterm(":vertical resize ")
 
 # XXX - this has conflicted with split zoom before
 (split | window) do:

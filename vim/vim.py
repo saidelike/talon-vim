@@ -587,7 +587,7 @@ def vim_motion_commands(m) -> str:
         print(f"no match for {str(m)}")
         return ""
 
-    actions.user.vim_set_normal(auto=True)
+    actions.user.vim_set_normal()
     return commands_with_motion[str(m)]
 
 
@@ -624,7 +624,7 @@ def vim_normal_counted_motion_keys(m) -> str:
 def vim_normal_counted_action(m) -> str:
     "Returns a string of a counted motion"
     # XXX - may need to do action-specific mode checking
-    v = VimMode()
+    v = VimAPI()
     v.cancel_queued_commands()
     if m.vim_counted_actions == "u":
         # undo doesn't work with ctrl-o it seems
@@ -638,7 +638,7 @@ def vim_normal_counted_action(m) -> str:
 @mod.capture(rule="[<number_small>] <self.vim_counted_actions_keys>")
 def vim_normal_counted_actions_keys(m) -> str:
     "Returns a string of a counted action representing keys"
-    v = VimMode()
+    v = VimAPI()
     v.cancel_queued_commands()
     v.set_any_motion_mode()
 
@@ -664,7 +664,7 @@ def vim_select_motion(m) -> str:
 # class main_actions:
 #    def insert(text):
 #        """override insert action to allow us to enter insert mode"""
-#        v = VimMode()
+#        v = VimAPI()
 #        v.set_insert_mode()
 #        scripting.core.MainActions.insert(text)
 
